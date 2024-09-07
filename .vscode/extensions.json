@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "esbenp.prettier-vscode",
+    "henrynguyen5-vsc.vsc-nvm",
+    "streetsidesoftware.code-spell-checker",
+    "SimonSiefke.svg-preview",
+  ],
+  "unwantedRecommendations": []
+}

@@ -1,0 +1,29 @@
+{
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "prettier.enable": false,
+  "eslint.enable": false,
+  "workbench.colorCustomizations": {
+    "sash.hoverBorder": "#7d80cb",
+    "statusBar.background": "#585cbd",
+    "statusBar.foreground": "#e7e7e7",
+    "statusBarItem.hoverBackground": "#7d80cb",
+    "statusBarItem.remoteBackground": "#585cbd",
+    "statusBarItem.remoteForeground": "#e7e7e7"
+  },
+  "peacock.color": "#585cbd"
+}
