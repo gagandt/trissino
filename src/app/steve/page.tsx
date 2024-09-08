@@ -1,8 +1,8 @@
 "use client";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import SearchableSelect, { Option } from "@/components/ui/searchableSelect";
-import React, { ChangeEvent, useMemo, useState } from "react";
+import SearchableSelect, { Option } from "@/components/ui/searchable-select";
+import React, { ChangeEvent, ReactNode, useMemo, useState } from "react";
 
 import usCities from "@/contants/us_states_wise_cities.json";
 import { Button } from "@/components/ui/button";
@@ -12,8 +12,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import FormFieldContainer from "../FormFieldContainer/FormFieldContainer";
-import Criteria from "../Criterias/Criterias";
 
 export interface CriteriaType {
   criteriaType: string;
@@ -21,11 +19,11 @@ export interface CriteriaType {
   noOfDivisions: number;
 }
 
-interface StateType {
+export interface StateType {
   term: string;
   city: string;
   keywords: string[];
-  criterias: CriteriaType[];
+  criterias?: CriteriaType[];
 }
 
 const keywordsList = [
@@ -41,7 +39,6 @@ const page = () => {
     term: "",
     city: "",
     keywords: ["somethign", "something 2"],
-    criterias: [],
   });
   const [keywordInput, setKeywordInput] = useState<string>("");
 
@@ -112,68 +109,7 @@ const page = () => {
     setKeywordInput("");
   };
 
-  const handleAddCriteria = () => {
-    const newCriteria = {
-      criteriaType: "",
-      ends: ["low", "high"],
-      noOfDivisions: 4,
-    };
-    setState((prev: StateType) => {
-      if (prev?.criterias?.[0] && !prev?.criterias?.[0]?.criteriaType)
-        return prev;
-      return {
-        ...prev,
-        criterias: [newCriteria, ...prev?.criterias],
-      };
-    });
-  };
 
-  const handleCriteriaInput = (
-    e: ChangeEvent<HTMLInputElement>,
-    idx: number,
-  ) => {
-    const { value, name } = e.target;
-    console.log(value, name);
-    setState((prev: StateType) => {
-      return {
-        ...prev,
-        criterias: prev?.criterias?.map((ele: CriteriaType, index: number) => {
-          if (index === idx) {
-            if (name === "end1") {
-              ele.ends[0] = value;
-              return ele;
-            } else if (name === "end2") {
-              ele.ends[1] = value;
-              return ele;
-            } else {
-              return {
-                ...ele,
-                [name]: value,
-              };
-            }
-          }
-          return ele;
-        }),
-      };
-    });
-  };
-
-  const handleCriteriaClick = (e: any) => {
-    const closesDiv = e.target.closest("div");
-    if (
-      closesDiv.dataset.type === "criteria" &&
-      closesDiv.dataset.action === "delete"
-    ) {
-      setState((prev: StateType) => {
-        return {
-          ...prev,
-          criterias: prev?.criterias?.filter((k: CriteriaType, idx: number) => {
-            return idx !== parseInt(closesDiv.dataset.index, 10);
-          }),
-        };
-      });
-    }
-  };
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-start px-4">
@@ -191,21 +127,6 @@ const page = () => {
                 });
               }}
               className="w-[200px]"
-            />
-          </FormFieldContainer>
-          <FormFieldContainer label="Select City">
-            <SearchableSelect
-              value={state?.city}
-              handleChange={(value: string) => {
-                setState((prev: StateType) => {
-                  return {
-                    ...prev,
-                    city: value,
-                  };
-                });
-              }}
-              className="w-[200px]"
-              optionsData={US_CITIES}
             />
           </FormFieldContainer>
         </div>
@@ -280,33 +201,26 @@ const page = () => {
           </div>
         </div>
 
-        <div className="flex w-fit flex-col items-start gap-2 rounded-lg border border-slate-200 p-2">
-          <Button onClick={handleAddCriteria} className="w-[200px]">
-            Add Criteria
-          </Button>
-          {!!state?.criterias?.length && (
-            <div className="flex flex-col gap-2">
-              <Label>Criterias</Label>
-              <div
-                onClick={handleCriteriaClick}
-                className="flex flex-col gap-2"
-              >
-                {state?.criterias?.map((ele: CriteriaType, idx: number) => {
-                  return (
-                    <Criteria
-                      idx={idx}
-                      criteria={ele}
-                      handleCriteriaInput={handleCriteriaClick}
-                    />
-                  );
-                })}
-              </div>
-            </div>
-          )}
-        </div>
+        
       </div>
     </div>
   );
 };
+
+interface FormFieldContainerProps {
+  label: string;
+  children: ReactNode;
+}
+
+const FormFieldContainer = (props: FormFieldContainerProps) => {
+  const { label, children } = props;
+  return (
+    <div className="flex flex-col items-start gap-1">
+      <Label className="text-slate-600">{label}</Label>
+      {children}
+    </div>
+  );
+};
+
 
 export default page;

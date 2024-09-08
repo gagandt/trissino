@@ -1,6 +1,6 @@
 import React, { ChangeEvent } from "react";
-import FormFieldContainer from "../FormFieldContainer/FormFieldContainer";
-import { CriteriaType } from "../steve/page";
+import FormFieldContainer from "./form-field-container";
+import { CriteriaType } from "../../app/steve/page";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ArrowRightIcon, X } from "lucide-react";
