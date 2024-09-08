@@ -2,18 +2,18 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import React, { ChangeEvent, useMemo, useState } from "react";
-import { Button } from '../ui/button';
-import Criteria from './criterias';
-import { CriteriaType, StateType } from '@/app/steve/page';
+import { Button } from "../ui/button";
+import Criteria from "./criteria";
+import { CriteriaType } from "./filter-card";
+import { Plus, PlusCircle } from "lucide-react";
 
-const CriteriaPanel = () => {
+interface PropsTypes {
+  criterias: CriteriaType[];
+  setCriterias: Function;
+}
 
-  const [state, setState] = useState<StateType>({
-    term: "",
-    city: "",
-    keywords: ["somethign", "something 2"],
-    criterias: [],
-  });
+const CriteriaPanel = (props: PropsTypes) => {
+  const { criterias, setCriterias } = props;
 
   const handleAddCriteria = () => {
     const newCriteria = {
@@ -21,13 +21,9 @@ const CriteriaPanel = () => {
       ends: ["low", "high"],
       noOfDivisions: 4,
     };
-    setState((prev: StateType) => {
-      if (prev?.criterias?.[0] && !prev?.criterias?.[0]?.criteriaType)
-        return prev;
-      return {
-        ...prev,
-        criterias: [newCriteria, ...prev?.criterias!],
-      };
+    setCriterias((prev: any) => {
+      if (prev?.[0] && !prev?.[0]?.criteriaType) return prev;
+      return [newCriteria, ...prev!];
     });
   };
 
@@ -37,27 +33,24 @@ const CriteriaPanel = () => {
   ) => {
     const { value, name } = e.target;
     console.log(value, name);
-    setState((prev: StateType) => {
-      return {
-        ...prev,
-        criterias: prev?.criterias?.map((ele: CriteriaType, index: number) => {
-          if (index === idx) {
-            if (name === "end1") {
-              ele.ends[0] = value;
-              return ele;
-            } else if (name === "end2") {
-              ele.ends[1] = value;
-              return ele;
-            } else {
-              return {
-                ...ele,
-                [name]: value,
-              };
-            }
+    setCriterias((prev: any) => {
+      return prev?.map((ele: CriteriaType, index: number) => {
+        if (index === idx) {
+          if (name === "end1") {
+            ele.ends[0] = value;
+            return ele;
+          } else if (name === "end2") {
+            ele.ends[1] = value;
+            return ele;
+          } else {
+            return {
+              ...ele,
+              [name]: value,
+            };
           }
-          return ele;
-        }),
-      };
+        }
+        return ele;
+      });
     });
   };
 
@@ -67,43 +60,73 @@ const CriteriaPanel = () => {
       closesDiv.dataset.type === "criteria" &&
       closesDiv.dataset.action === "delete"
     ) {
-      setState((prev: StateType) => {
-        return {
-          ...prev,
-          criterias: prev?.criterias?.filter((k: CriteriaType, idx: number) => {
-            return idx !== parseInt(closesDiv.dataset.index, 10);
-          }),
-        };
+      setCriterias((prev: any) => {
+        return prev?.filter((k: CriteriaType, idx: number) => {
+          return idx !== parseInt(closesDiv.dataset.index, 10);
+        });
       });
     }
   };
-  
-  return (
-    <div className="flex w-fit flex-col items-start gap-2 rounded-lg border border-slate-200 p-2">
-          <Button onClick={handleAddCriteria} className="w-[200px]">
-            Add Criteria
-          </Button>
-          {!!state?.criterias?.length && (
-            <div className="flex flex-col gap-2">
-              <Label>Criterias</Label>
-              <div
-                onClick={handleCriteriaClick}
-                className="flex flex-col gap-2"
-              >
-                {state?.criterias?.map((ele: CriteriaType, idx: number) => {
-                  return (
-                    <Criteria
-                      idx={idx}
-                      criteria={ele}
-                      handleCriteriaInput={handleCriteriaClick}
-                    />
-                  );
-                })}
-              </div>
-            </div>
-          )}
-        </div>
-  )
-}
 
-export default CriteriaPanel
+  const handleIncrementDivisions = (idx: number) => {
+    setCriterias((prev: any) => {
+      return prev?.map((ele: CriteriaType, index: number) => {
+        if (index === idx) {
+          return {
+            ...ele,
+            noOfDivisions: ele?.noOfDivisions + 1,
+          };
+        }
+        return ele;
+      });
+    });
+  };
+
+  const handleDecrementDivisions = (idx: number) => {
+    setCriterias((prev: any) => {
+      return prev?.map((ele: CriteriaType, index: number) => {
+        if (index === idx) {
+          return {
+            ...ele,
+            noOfDivisions: ele?.noOfDivisions - 1,
+          };
+        }
+        return ele;
+      });
+    });
+  };
+
+  return (
+    <div className="flex w-full flex-col items-start gap-6 rounded-lg">
+      <div className="flex w-full items-center justify-between">
+        <h3 className="text-lg font-semibold">Criteria</h3>
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={handleAddCriteria}
+        >
+          <PlusCircle className="mr-2 h-4 w-4" />
+          Add Criteria
+        </Button>
+      </div>
+      {!!criterias?.length && (
+        <div onClick={handleCriteriaClick} className="flex flex-col gap-7">
+          {criterias?.map((ele: CriteriaType, idx: number) => {
+            return (
+              <Criteria
+                idx={idx}
+                criteria={ele}
+                handleCriteriaInput={handleCriteriaInput}
+                handleIncrementDivisions={handleIncrementDivisions}
+                handleDecrementDivisions={handleDecrementDivisions}
+              />
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default CriteriaPanel;

@@ -117,6 +117,11 @@ interface MultiSelectProps
    * Optional, can be used to add custom styles.
    */
   className?: string;
+
+  /**
+   * Search Input placeholder
+   */
+  inputPlaceholder?: string;
 }
 
 export const MultiSelect = React.forwardRef<
@@ -135,6 +140,7 @@ export const MultiSelect = React.forwardRef<
       modalPopover = false,
       asChild = false,
       className,
+      inputPlaceholder = "Search...",
       ...props
     },
     ref,
@@ -143,6 +149,7 @@ export const MultiSelect = React.forwardRef<
       React.useState<string[]>(defaultValue);
     const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
     const [isAnimating, setIsAnimating] = React.useState(false);
+    const [searchInput, setSearchInput] = React.useState<string>("");
 
     React.useEffect(() => {
       setSelectedValues(defaultValue);
@@ -162,6 +169,7 @@ export const MultiSelect = React.forwardRef<
     };
 
     const toggleOption = (value: string) => {
+      console.log("====", value);
       const newSelectedValues = selectedValues.includes(value)
         ? selectedValues.filter((v) => v !== value)
         : [...selectedValues, value];
@@ -228,7 +236,7 @@ export const MultiSelect = React.forwardRef<
                         {IconComponent && (
                           <IconComponent className="mr-2 h-4 w-4" />
                         )}
-                        {option?.label}
+                        {option?.label ?? value}
                         <XCircle
                           className="ml-2 h-4 w-4 cursor-pointer"
                           onClick={(event) => {
@@ -291,13 +299,26 @@ export const MultiSelect = React.forwardRef<
         >
           <Command>
             <CommandInput
-              placeholder="Search..."
+              placeholder={inputPlaceholder}
               onKeyDown={handleInputKeyDown}
+              onValueChange={(value) => {
+                setSearchInput(value);
+              }}
             />
             <CommandList>
-              <CommandEmpty>No results found.</CommandEmpty>
+              <CommandEmpty className="flex items-center justify-center p-2">
+                <Button
+                  className="w-full"
+                  variant="secondary"
+                  onClick={() => {
+                    toggleOption(searchInput);
+                  }}
+                >
+                  Add {searchInput}
+                </Button>
+              </CommandEmpty>
               <CommandGroup>
-                <CommandItem
+                {/* <CommandItem
                   key="all"
                   onSelect={toggleAll}
                   className="cursor-pointer"
@@ -313,7 +334,7 @@ export const MultiSelect = React.forwardRef<
                     <CheckIcon className="h-4 w-4" />
                   </div>
                   <span>(Select All)</span>
-                </CommandItem>
+                </CommandItem> */}
                 {options.map((option) => {
                   const isSelected = selectedValues.includes(option.value);
                   return (
