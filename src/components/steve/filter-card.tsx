@@ -40,8 +40,8 @@ const keywordsList = [
   },
 ];
 
-const FilterCard = (props: { setIsLoading: Function }) => {
-  const { setIsLoading } = props;
+const FilterCard = (props: { setIsOpen: Function }) => {
+  const { setIsOpen } = props;
 
   const { toast } = useToast();
 
@@ -87,7 +87,7 @@ const FilterCard = (props: { setIsLoading: Function }) => {
       });
       return;
     }
-    setIsLoading(true);
+    setIsOpen(true);
   };
 
   return (
