@@ -1,7 +1,7 @@
 import React, { ChangeEvent } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowRightIcon, Minus, Plus, X } from "lucide-react";
+import { ArrowRightIcon, DeleteIcon, Minus, Plus, Trash2, X } from "lucide-react";
 import { CriteriaType, FormFieldContainer } from "./filter-card";
 import { Button } from "../ui/button";
 
@@ -24,9 +24,9 @@ const Criteria = (props: PropTypes) => {
   return (
     <div
       key={idx}
-      className="relative flex w-full items-end justify-start gap-4 pr-8"
+      className="relative flex w-full items-end justify-start gap-8 pr-8"
     >
-      <FormFieldContainer className="flex-1" label="Enter Criteria">
+      <FormFieldContainer className="flex flex-[3]" label="Enter Criteria">
         <Input
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
             handleCriteriaInput(e, idx);
@@ -37,9 +37,11 @@ const Criteria = (props: PropTypes) => {
           autoComplete="off"
         />
       </FormFieldContainer>
-      <div className="flex flex-1 flex-col gap-2">
+
+      <div className="flex flex-col gap-2 flex-1">
         <Label className="text-slate-600">Enter Ends</Label>
-        <div className="flex gap-2">
+
+        <div className="flex gap-2 items-center">
           <Input
             onChange={(e) => {
               handleCriteriaInput(e, idx);
@@ -49,7 +51,7 @@ const Criteria = (props: PropTypes) => {
             name="end1"
             autoComplete="off"
           />
-          <ArrowRightIcon className="h-8" />
+          <ArrowRightIcon className="h-4" />
           <Input
             onChange={(e) => {
               handleCriteriaInput(e, idx);
@@ -61,14 +63,17 @@ const Criteria = (props: PropTypes) => {
           />
         </div>
       </div>
-      <FormFieldContainer className="flex-1" label="No. of Divisions">
+
+      <FormFieldContainer label="No. of Divisions" className="flex-1">
         <div className="flex gap-2">
           <Button
             onClick={() => {
               if (criteria?.noOfDivisions <= 0) return;
               handleDecrementDivisions(idx);
             }}
+            size="icon"
             variant="secondary"
+            className="rounded-full w-8 h-8"
           >
             <Minus className="h-5" />
           </Button>
@@ -77,7 +82,7 @@ const Criteria = (props: PropTypes) => {
               handleCriteriaInput(e, idx);
             }}
             value={criteria?.noOfDivisions}
-            className="w-full [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+            className="w-[40px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
             name="noOfDivisions"
             type="number"
           />
@@ -85,20 +90,27 @@ const Criteria = (props: PropTypes) => {
             onClick={() => {
               handleIncrementDivisions(idx);
             }}
+            size="icon"
             variant="secondary"
+            className="rounded-full w-8 h-8"
           >
             <Plus className="h-5" />
           </Button>
+
+          <div
+            data-action="delete"
+            data-type="criteria"
+            data-index={idx}
+            className="absolute -right-2 bottom-0 top-0 my-auto flex h-full translate-y-[15%] cursor-pointer items-center"
+          >
+            <Trash2 className="h-5" />
+          </div>
         </div>
+
+
       </FormFieldContainer>
-      <div
-        data-action="delete"
-        data-type="criteria"
-        data-index={idx}
-        className="absolute -right-2 bottom-0 top-0 my-auto flex h-full translate-y-[15%] cursor-pointer items-center"
-      >
-        <X className="h-5" />
-      </div>
+
+
     </div>
   );
 };

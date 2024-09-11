@@ -17,6 +17,7 @@ import CriteriaPanel from "./criteria-panel";
 
 import usCities from "@/contants/us_states_wise_cities.json";
 import { useToast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
 
 export interface CriteriaType {
   criteriaType: string;
@@ -88,12 +89,17 @@ const FilterCard = (props: { setIsOpen: Function }) => {
       return;
     }
     setIsOpen(true);
+
+    const urlsPanel = document.getElementById('urls-panel');
+    if (urlsPanel) {
+      urlsPanel.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   return (
     <Card className="mt-16 w-full max-w-3xl">
       <CardHeader>
-        <CardTitle className="text-2xl">Research Brand</CardTitle>
+        <CardTitle className="text-2xl">Start Research</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="flex w-full flex-col space-y-6">
@@ -112,6 +118,7 @@ const FilterCard = (props: { setIsOpen: Function }) => {
                 className="flex-1"
               />
             </FormFieldContainer>
+
             <FormFieldContainer className="flex-1" label="Select City">
               <SearchableSelect
                 label="Select City"
@@ -164,7 +171,7 @@ interface FormFieldContainerProps {
 export const FormFieldContainer = (props: FormFieldContainerProps) => {
   const { label, children, className } = props;
   return (
-    <div className={`flex flex-col items-start space-y-2 ${className} w-full`}>
+    <div className={cn("flex flex-col items-start space-y-2", className)}>
       <Label className="text-slate-600">{label}</Label>
       {children}
     </div>
