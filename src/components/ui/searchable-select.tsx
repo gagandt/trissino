@@ -29,7 +29,7 @@ import { cn } from "@/lib/utils";
 
 export interface Option {
   label: string;
-  value: any;
+  value: string;
   parent?: string;
 }
 
@@ -37,7 +37,7 @@ interface PropsTypes {
   className?: string;
   label?: string;
   optionsData?: Option[];
-  value: any;
+  value: string;
   handleChange: Function;
 }
 
@@ -45,7 +45,7 @@ const SearchableSelect = (props: PropsTypes) => {
   const {
     optionsData = [],
     className,
-    handleChange = () => {},
+    handleChange = () => { },
     value,
     label = "Select",
   } = props;
@@ -63,7 +63,7 @@ const SearchableSelect = (props: PropsTypes) => {
         >
           {value
             ? optionsData.find((option: Option) => option.value === value)
-                ?.label
+              ?.label
             : label}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>

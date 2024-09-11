@@ -41,7 +41,7 @@ const keywordsList = [
   },
 ];
 
-const FilterCard = (props: { setIsOpen: Function }) => {
+const FilterCard = (props: { setIsOpen: (isOpen: boolean) => void }) => {
   const { setIsOpen } = props;
 
   const { toast } = useToast();

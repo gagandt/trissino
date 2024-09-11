@@ -10,7 +10,7 @@ import Link from 'next/link'
 
 interface PropsTypes {
   isOpen: boolean;
-  setIsOpen: Function;
+  setIsOpen: (isOpen: boolean) => void;
 }
 
 export default function SteveUrls(props: PropsTypes) {
