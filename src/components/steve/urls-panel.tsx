@@ -54,6 +54,10 @@ export default function SteveUrls(props: PropsTypes) {
     setEditingIndex(-1)
   }
 
+  const handleBrandLink = (brandLink: string) => {
+    window?.open(brandLink, 'blank');
+  }
+
   return (
     <div id="urls-panel" className="w-full mt-12 flex flex-col items-center justify-center">
       <AnimatePresence>
@@ -122,7 +126,9 @@ export default function SteveUrls(props: PropsTypes) {
                                 className="w-full bg-white"
                               />
                             ) : (
-                              <div className="flex items-center gap-2 cursor-pointer w-fit hover:border-b hover:border-blue-500">
+                              <div onClick={() => {
+                                handleBrandLink(item?.url);
+                              }} className="flex items-center gap-2 cursor-pointer w-fit hover:border-b hover:border-blue-500">
                                 <p className='text-sm text-muted-foreground truncate'>{item.url}</p>
                               </div>
                             )}

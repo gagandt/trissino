@@ -68,7 +68,7 @@ export const brandLinks: BrandItem[] = [
   },
   {
     name: "Doherty's East Ave Irish Pub",
-    url: "https://www.eastavepub.com",
+    url: "https://www.dohertysirishpubnc.com/",
     logo: DohertysLogo
   },
   {
@@ -93,7 +93,7 @@ export const brandLinks: BrandItem[] = [
   },
   {
     name: "KFC",
-    url: "https://www.kfc.com",
+    url: "https://www.kfc.com/",
     logo: KFCLogo
   }
 ];
