@@ -1,7 +1,7 @@
 export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
-  name: "Trissino AI",
+  name: "Steve",
   description: "AI-powered agent for brand research",
   mainNav: [
     {
