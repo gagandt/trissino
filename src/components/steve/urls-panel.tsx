@@ -7,22 +7,19 @@ import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import Link from 'next/link'
+import Image from 'next/image'
+import { brandLinks } from '@/contants/brand-links'
 
 interface PropsTypes {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
 }
 
+
 export default function SteveUrls(props: PropsTypes) {
   const { isOpen, setIsOpen } = props;
   const [isLoading, setIsLoading] = useState(false)
-  const [urls, setUrls] = useState([
-    { name: 'Example 1', url: 'https://example1.com' },
-    { name: 'Example 2', url: 'https://example2.com' },
-    { name: 'Example 3', url: 'https://example3.com' },
-    { name: 'Example 4', url: 'https://example4.com' },
-    { name: 'Example 5', url: 'https://example5.com' },
-  ])
+  const [urls, setUrls] = useState(brandLinks)
   const [editingIndex, setEditingIndex] = useState(-1)
 
   useEffect(() => {
@@ -36,7 +33,7 @@ export default function SteveUrls(props: PropsTypes) {
   }, [isOpen])
 
   const addUrl = () => {
-    setUrls([...urls, { name: `New Example ${urls.length + 1}`, url: 'https://newexample.com' }])
+    setUrls([...urls, { name: `New Example ${urls.length + 1}`, url: 'https://newexample.com', logo: '' }])
   }
 
   const removeUrl = (index: number) => {
@@ -58,7 +55,7 @@ export default function SteveUrls(props: PropsTypes) {
   }
 
   return (
-    <div id="urls-panel" className="w-full max-w-3xl mt-12 flex flex-col items-center justify-center">
+    <div id="urls-panel" className="w-full mt-12 flex flex-col items-center justify-center">
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -98,20 +95,22 @@ export default function SteveUrls(props: PropsTypes) {
                           className="bg-muted rounded-md p-3 mb-3 flex items-center"
                         >
                           <div className="flex-shrink-0 mr-4">
-                            {/* <Image
-                              src={`/placeholder.svg?height=40&width=40`}
-                              alt={`${item.name} icon`}
-                              width={40}
-                              height={40}
-                              className="rounded-md"
-                            /> */}
+                            {item?.logo ? (
+                              <Image
+                                src={item?.logo}
+                                alt={`${item.name} icon`}
+                                width={40}
+                                height={40}
+                                className="rounded-md"
+                              />
+                            ) : (
+                              <FileImageIcon size={32} />
+                            )}
 
-                            <FileImageIcon size={32} />
                           </div>
                           <div className="flex-grow">
-                            <div className="font-medium mb-1">{item.name}
-
-
+                            <div className="font-medium mb-1">
+                              {item.name}
                             </div>
                             {editingIndex === index ? (
                               <Input

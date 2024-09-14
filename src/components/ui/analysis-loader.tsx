@@ -2,8 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-
-import brandLinks from "@/contants/brand_links.json";
+import { brandLinks } from "@/contants/brand-links";
 
 interface PropsTypes {
   isLoading: boolean;
@@ -69,7 +68,7 @@ export default function AnalysisLoader(props: PropsTypes) {
               <>
                 Analyzing item{" "}
                 <span className="font-bold text-blue-500">
-                  {brandLinks?.[currentItem]}
+                  {brandLinks?.[currentItem]?.url}
                 </span>
               </>
             ) : (

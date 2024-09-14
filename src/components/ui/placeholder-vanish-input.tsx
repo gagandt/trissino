@@ -150,7 +150,7 @@ export function PlaceholdersAndVanishInput({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && !animating) {
+    if (e.key === "Enter" && value && !animating) {
       vanishAndSubmit();
     }
   };
@@ -200,8 +200,9 @@ export function PlaceholdersAndVanishInput({
         ref={inputRef}
         value={value}
         type="text"
+        data-enable-grammarly="false"
         className={cn(
-          "w-full relative text-sm sm:text-base z-50 border-none dark:text-white bg-transparent text-black h-full focus:outline-none focus:ring-0 pl-6 py-6 pr-20",
+          "w-full relative resize-none text-sm sm:text-base z-50 border-none dark:text-white bg-transparent text-black h-full focus:outline-none focus:ring-0 pl-6 py-6 pr-20",
           animating && "text-transparent dark:text-transparent"
         )}
       />

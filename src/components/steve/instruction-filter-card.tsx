@@ -41,7 +41,7 @@ const keywordsList = [
   },
 ];
 
-const FilterCard = (props: { setIsOpen: (isOpen: boolean) => void }) => {
+const InstructionFilterCard = (props: { setIsOpen: (isOpen: boolean) => void }) => {
   const { setIsOpen } = props;
 
   const { toast } = useToast();
@@ -97,7 +97,7 @@ const FilterCard = (props: { setIsOpen: (isOpen: boolean) => void }) => {
   };
 
   return (
-    <Card className="mt-16 w-full max-w-3xl">
+    <Card className="w-full">
       <CardHeader>
         <CardTitle className="text-2xl">Start Research</CardTitle>
       </CardHeader>
@@ -178,4 +178,4 @@ export const FormFieldContainer = (props: FormFieldContainerProps) => {
   );
 };
 
-export default FilterCard;
+export default InstructionFilterCard;

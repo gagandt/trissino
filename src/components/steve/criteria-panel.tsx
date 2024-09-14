@@ -4,7 +4,7 @@ import { Label } from "@/components/ui/label";
 import React, { ChangeEvent, useMemo, useState } from "react";
 import { Button } from "../ui/button";
 import Criteria from "./criteria";
-import { CriteriaType } from "./filter-card";
+import { CriteriaType } from "./instruction-filter-card";
 import { Plus, PlusCircle } from "lucide-react";
 
 interface PropsTypes {
