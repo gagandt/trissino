@@ -6,7 +6,7 @@ Include the user-provided term: Make sure the core subject (i.e., the 'term') is
 
 Incorporate all relevant keywords: These should guide the search engine to prioritize content directly related to the term. Ensure each keyword is used in a context that naturally complements the term.
 
-Specify criteria types: Focus on criteria that refine the search results. For example, when filtering for things like "Price," use phrases like 'affordable,' 'cheap,' 'high-end,' 'luxury' to reflect price ranges. When the criterion is "Quality," use terms like 'best,' 'top-rated,' 'high-quality,' or 'popular.' Each criterion should be applied with appropriate synonyms to capture all variations.
+Specify criteria types: Focus on criteria that refine the search results. For example, when filtering for things like 'Price,' use phrases like 'affordable,' 'cheap,' 'high-end,' 'luxury' to reflect price ranges. When the criterion is "Quality," use terms like 'best,' 'top-rated,' 'high-quality,' or 'popular.' Each criterion should be applied with appropriate synonyms to capture all variations.
 
 Consider contextual relevance: Guide the search engine by explicitly requesting pages that match multiple criteria (e.g., 'best nearby restaurants with affordable prices and high customer ratings').
 
@@ -18,7 +18,7 @@ Here is an example format to help you frame the query:
 
 Example Format: 'Find [term] related to [keyword 1], [keyword 2], and [keyword 3] that match criteria like [price], [quality], and [type]. Focus on detailed information that includes pricing, product reviews, descriptions, and customer ratings. Prioritize results from trusted sources, guides, or reviews related to [specific field, industry, or location]. Avoid broad or generic results.'
 
-Using this approach, generate a search query that combines the term, keywords, and criteria in a manner that ensures comprehensive and targeted results.
+Using this approach, generate a search query that combines the term, keywords, and criteria in a manner that ensures comprehensive and targeted results. Make sure that the generated query does not have double quotes, use single quotes if required.
 Generate Maximum 1 query for now.
 `;
 
@@ -35,7 +35,7 @@ You are tasked with processing web-scraped data from URLs, evaluating the conten
 
 3. Classify Criteria Levels: Divide each matching item into appropriate levels based on the provided criteria. For instance, if the criteria involve 'price,' classify the item as 'low,' 'medium,' or 'high' price. Similarly, for 'quality' or 'quantity,' classify as 'low,' 'medium,' or 'high,' based on the content of the web page.
 
-Format the Results: Return the list of results in the following format for each matching item:
+Format the Results: Return the array of results in the following format for each matching item:
 
 {
   "brand": "Brand name or source of the item",
