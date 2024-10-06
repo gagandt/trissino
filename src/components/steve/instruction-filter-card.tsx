@@ -16,9 +16,9 @@ import { MultiSelect } from "../ui/multi-select";
 import CriteriaPanel from "./criteria-panel";
 
 import usCities from "@/contants/us_states_wise_cities.json";
-import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-import { SteveAnalysisQueryStore, useSteveAnalysisQueryStore } from "@/stores/steve-analysis-query-store";
+import { useSteveAnalysisQueryStore } from "@/stores/steve-analysis-query-store";
+import { toast } from "sonner";
 
 const keywordsList = [
   {
@@ -50,8 +50,6 @@ const keywordsList = [
 const InstructionFilterCard = (props: { setIsOpen: (isOpen: boolean) => void }) => {
   const { setIsOpen } = props;
 
-  const { toast } = useToast();
-
   const steveAnalysisQueryStore = useSteveAnalysisQueryStore(state => state);
   const { term, city, keywords, criterias } = steveAnalysisQueryStore;
   
@@ -67,21 +65,14 @@ const InstructionFilterCard = (props: { setIsOpen: (isOpen: boolean) => void }) 
 
   const handleSubmitClick = () => {
     if (!term) {
-      toast({
-        variant: "default",
-        title: "Please Enter Search Term",
-        description: "",
+      toast("Please Enter Search Term", {
         className: 'mt-4 bg-red-500',
-        // action: <ToastAction altText="Try again">Try again</ToastAction>,
       });
       return;
     }
     if (!city) {
-      toast({
-        variant: "default",
-        title: "Please Select a City",
-        description: "",
-        // action: <ToastAction altText="Try again">Try again</ToastAction>,
+      toast("Please Select a City", {
+        className: 'mt-4 bg-red-500',
       });
       return;
     }

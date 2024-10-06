@@ -26,13 +26,13 @@ export const burgerLinks: BrandItem[] = [
     name: "sweetgreen",
     url: "https://www.sweetgreen.com",
     logo: SweetgreenLogo,
-    division: 1
+    division: 2
   },
   {
     name: "clover food lab",
     url: "https://www.cloverfoodlab.com",
     logo: CloverLogo,
-    division: 1,
+    division: 3,
   },
   {
     name: "B.GOOD",
@@ -44,31 +44,31 @@ export const burgerLinks: BrandItem[] = [
     name: "FIVE GUYS",
     url: "https://www.fiveguys.com",
     logo: FiveGuysLogo,
-    division: 1,
+    division: 3,
   },
   {
     name: "Shake Shack",
     url: "https://www.shakeshack.com",
     logo: ShakeShackLogo,
-    division: 1,
+    division: 2,
   },
   {
     name: "Tasty Burger",
     url: "https://www.tastyburger.com",
     logo: TastyBurgerLogo,
-    division: 2,
+    division: 1,
   },
   {
     name: "Wild Willy's Burgers",
     url: "http://www.wildwillysburgers.com",
     logo: WildWillysLogo,
-    division: 2,
+    division: 3,
   },
   {
     name: "Mainely Burgers",
     url: "https://www.mainelyburgers.com",
     logo: MainelyBurgersLogo,
-    division: 2,
+    division: 1,
   },
   {
     name: "Jersey Mike's Subs",
@@ -80,13 +80,13 @@ export const burgerLinks: BrandItem[] = [
     name: "Doherty's East Ave Irish Pub",
     url: "https://www.dohertysirishpubnc.com/",
     logo: DohertysLogo,
-    division: 3,
+    division: 1,
   },
   {
     name: "Gregg's Restaurant",
     url: "https://www.greggsusa.com",
     logo: GreggsLogo,
-    division: 3,
+    division: 2,
   },
   {
     name: "Halfway Café",
@@ -98,13 +98,13 @@ export const burgerLinks: BrandItem[] = [
     name: "Panera Bread",
     url: "https://www.panerabread.com",
     logo: PaneraBreadLogo,
-    division: 3,
+    division: 1,
   },
   {
     name: "McDonald's",
     url: "https://www.mcdonalds.com",
     logo: McDonaldsLogo,
-    division: 3,
+    division: 2,
   },
   {
     name: "KFC",
@@ -115,64 +115,64 @@ export const burgerLinks: BrandItem[] = [
 ];
 
 export const skincareLinks: BrandItem[] = [
-  {
-    name: "Vaseline",
-    url: "https://www.vaseline.com",
-    division: 3,
-    logo: "https://ygo-assets-entities-us.yougov.net/99532b6e-222c-11e8-91d7-d17ce050fa91.jpg"
-  },
-  {
-    name: "Nivea",
-    url: "https://www.nivea.com",
-    division: 3,
-    logo: "https://ygo-assets-entities-us.yougov.net/2b2fd170-c708-11e8-8d12-4b6fc186e574.jpg?zcw=612&zch=612&zct=0&zcl=74"
-  },
-  {
-    name: "Olay",
-    url: "https://www.olay.com",
-    division: 3,
-    logo: "https://ygo-assets-entities-us.yougov.net/fea1bf0e-2d08-11e6-9dc6-455dca91e85a.jpg"
-  },
-  {
-    name: "Neutrogena",
-    url: "https://www.neutrogena.com",
-    division: 3,
-    logo: "https://ygo-assets-entities-us.yougov.net/a914cdd0-2d08-11e6-bce7-6ff134176666.jpg"
-  },
-  {
-    name: "CeraVe",
-    url: "https://www.cerave.com",
-    division: 3,
-    logo: "https://ygo-assets-entities-us.yougov.net/e1f770f0-b7db-11e7-bee0-e301344be102.jpg"
-  },
-  {
-    name: "Bath & Body Works",
-    url: "https://www.bathandbodyworks.com",
-    division: 3,
-    logo: "https://ygo-assets-entities-us.yougov.net/d327007e-1306-11e8-a56d-535a4e504290.jpg"
-  },
-  {
-    name: "L'Oreal Paris",
-    division: 3,
-    url: "https://www.lorealparis.com",
-    logo: "https://ygo-assets-entities-us.yougov.net/88a7070c-14be-11e9-9e9a-63247b032ab8.jpg"
-  },
-  {
-    name: "Aveeno",
-    division: 3,
-    url: "https://www.aveeno.com",
-    logo: "https://ygo-assets-entities-us.yougov.net/ce07b429-2d00-11e6-a4bd-71dbf5f2854a.jpg"
-  },
-  {
-    name: "Johnson's Baby",
-    division: 3,
-    url: "https://www.johnsonsbaby.com",
-    logo: "https://ygo-assets-entities-us.yougov.net/7237c544-2d06-11e6-9570-cf1c514d3e57.jpg"
-  },
-  {
-    name: "Unilever",
-    division: 3,
-    url: "https://www.unilever.com",
-    logo: "https://ygo-assets-entities-us.yougov.net/7a8a7e4d-2d0d-11e6-bce7-6ff134176666.jpg"
-  }
+    {
+      name: "Vaseline",
+      url: "https://www.vaseline.com",
+      logo: "https://ygo-assets-entities-us.yougov.net/99532b6e-222c-11e8-91d7-d17ce050fa91.jpg",
+      division: 2
+    },
+    {
+      name: "Nivea",
+      url: "https://www.nivea.com",
+      logo: "https://ygo-assets-entities-us.yougov.net/2b2fd170-c708-11e8-8d12-4b6fc186e574.jpg?zcw=612&zch=612&zct=0&zcl=74",
+      division: 3
+    },
+    {
+      name: "Olay",
+      url: "https://www.olay.com",
+      logo: "https://ygo-assets-entities-us.yougov.net/fea1bf0e-2d08-11e6-9dc6-455dca91e85a.jpg",
+      division: 1
+    },
+    {
+      name: "Neutrogena",
+      url: "https://www.neutrogena.com",
+      logo: "https://ygo-assets-entities-us.yougov.net/a914cdd0-2d08-11e6-bce7-6ff134176666.jpg",
+      division: 3
+    },
+    {
+      name: "CeraVe",
+      url: "https://www.cerave.com",
+      logo: "https://ygo-assets-entities-us.yougov.net/e1f770f0-b7db-11e7-bee0-e301344be102.jpg",
+      division: 1
+    },
+    {
+      name: "Bath & Body Works",
+      url: "https://www.bathandbodyworks.com",
+      logo: "https://ygo-assets-entities-us.yougov.net/d327007e-1306-11e8-a56d-535a4e504290.jpg",
+      division: 2
+    },
+    {
+      name: "L'Oreal Paris",
+      url: "https://www.lorealparis.com",
+      logo: "https://ygo-assets-entities-us.yougov.net/88a7070c-14be-11e9-9e9a-63247b032ab8.jpg",
+      division: 3
+    },
+    {
+      name: "Aveeno",
+      url: "https://www.aveeno.com",
+      logo: "https://ygo-assets-entities-us.yougov.net/ce07b429-2d00-11e6-a4bd-71dbf5f2854a.jpg",
+      division: 1
+    },
+    {
+      name: "Johnson's Baby",
+      url: "https://www.johnsonsbaby.com",
+      logo: "https://ygo-assets-entities-us.yougov.net/7237c544-2d06-11e6-9570-cf1c514d3e57.jpg",
+      division: 2
+    },
+    {
+      name: "Unilever",
+      url: "https://www.unilever.com",
+      logo: "https://ygo-assets-entities-us.yougov.net/7a8a7e4d-2d0d-11e6-bce7-6ff134176666.jpg",
+      division: 3
+    }
 ];
