@@ -149,10 +149,6 @@ export const MultiSelect = React.forwardRef<
     const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
     const [searchInput, setSearchInput] = React.useState<string>("");
 
-    React.useEffect(() => {
-      setSelectedValues(defaultValue);
-    }, [defaultValue]);
-
     const handleInputKeyDown = (
       event: React.KeyboardEvent<HTMLInputElement>,
     ) => {
@@ -167,7 +163,6 @@ export const MultiSelect = React.forwardRef<
     };
 
     const toggleOption = (value: string) => {
-      console.log("====", value);
       const newSelectedValues = selectedValues.includes(value)
         ? selectedValues.filter((v) => v !== value)
         : [...selectedValues, value];

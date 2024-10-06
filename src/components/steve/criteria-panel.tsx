@@ -4,8 +4,8 @@ import { Label } from "@/components/ui/label";
 import React, { ChangeEvent, useMemo, useState } from "react";
 import { Button } from "../ui/button";
 import Criteria from "./criteria";
-import { CriteriaType } from "./instruction-filter-card";
 import { Plus, PlusCircle } from "lucide-react";
+import { CriteriaType } from "@/stores/steve-analysis-query-store";
 
 interface PropsTypes {
   criterias: CriteriaType[];
@@ -21,10 +21,9 @@ const CriteriaPanel = (props: PropsTypes) => {
       ends: ["low", "high"],
       noOfDivisions: 4,
     };
-    setCriterias((prev: any) => {
-      if (prev?.[0] && !prev?.[0]?.criteriaType) return prev;
-      return [newCriteria, ...prev!];
-    });
+    if (criterias?.[0] && !criterias?.[0]?.criteriaType) return;
+    const newCriterias = [newCriteria, ...criterias];
+    setCriterias(newCriterias);
   };
 
   const handleCriteriaInput = (
@@ -32,26 +31,23 @@ const CriteriaPanel = (props: PropsTypes) => {
     idx: number,
   ) => {
     const { value, name } = e.target;
-    console.log(value, name);
-    setCriterias((prev: any) => {
-      return prev?.map((ele: CriteriaType, index: number) => {
-        if (index === idx) {
-          if (name === "end1") {
-            ele.ends[0] = value;
-            return ele;
-          } else if (name === "end2") {
-            ele.ends[1] = value;
-            return ele;
-          } else {
-            return {
-              ...ele,
-              [name]: value,
-            };
-          }
+    const newCriterias = criterias?.map((ele: CriteriaType, index: number) => {
+      if (index === idx) {
+        if (name === "end1") {
+          ele.ends[0] = value;
+          return ele;
+        } else if (name === "end2") {
+          ele.ends[1] = value;
+          return ele;
+        } else if (name === "criteriaType") {
+          ele.criteriaType = value;
+          return ele;
         }
         return ele;
-      });
+      }
+      return ele;
     });
+    setCriterias(newCriterias);
   };
 
   const handleCriteriaClick = (e: any) => {
@@ -60,40 +56,37 @@ const CriteriaPanel = (props: PropsTypes) => {
       closesDiv.dataset.type === "criteria" &&
       closesDiv.dataset.action === "delete"
     ) {
-      setCriterias((prev: any) => {
-        return prev?.filter((k: CriteriaType, idx: number) => {
-          return idx !== parseInt(closesDiv.dataset.index, 10);
-        });
+      const newCriterias = criterias?.filter((k: CriteriaType, idx: number) => {
+        return idx !== parseInt(closesDiv.dataset.index, 10);
       });
+      setCriterias(newCriterias);
     }
   };
 
   const handleIncrementDivisions = (idx: number) => {
-    setCriterias((prev: any) => {
-      return prev?.map((ele: CriteriaType, index: number) => {
-        if (index === idx) {
+    const newCriterias = criterias?.map((ele: CriteriaType, index: number) => {
+      if (index === idx) {
           return {
             ...ele,
             noOfDivisions: ele?.noOfDivisions + 1,
           };
         }
         return ele;
-      });
     });
+    setCriterias(newCriterias);
   };
 
   const handleDecrementDivisions = (idx: number) => {
-    setCriterias((prev: any) => {
-      return prev?.map((ele: CriteriaType, index: number) => {
-        if (index === idx) {
+    const newCriterias = criterias?.map((ele: CriteriaType, index: number) => {
+      if (index === idx) {
           return {
             ...ele,
             noOfDivisions: ele?.noOfDivisions - 1,
           };
         }
         return ele;
-      });
     });
+    setCriterias(newCriterias);
   };
 
   return (
@@ -110,7 +103,7 @@ const CriteriaPanel = (props: PropsTypes) => {
           Add Criteria
         </Button>
       </div>
-      {!!criterias?.length && (
+        {!!criterias?.length && (
         <div onClick={handleCriteriaClick} className="flex flex-col gap-7">
           {criterias?.map((ele: CriteriaType, idx: number) => {
             return (
