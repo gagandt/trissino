@@ -9,8 +9,7 @@ import type { BrandItem } from '@/contants/brand-links'
 import { ArrowLeft } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
-
+import { FileChartLine, Download } from "lucide-react";
 interface Brand {
   name: string
   division: number
@@ -63,7 +62,8 @@ export default function AnalysisTimeline() {
             <p className="text-sm text-muted-foreground">Keywords: Vegan, Healthy</p>
           </div>
           <div className="flex justify-between items-center mb-4">
-            <div className="flex space-x-2">
+            <div className="flex items-center space-x-2">
+              <FileChartLine className='text-muted-foreground' />
 
               <Tabs value={criteriaType} onValueChange={(value) => {
                 setCriteriaType(value);
@@ -72,12 +72,21 @@ export default function AnalysisTimeline() {
                 } else {
                   setSelectedCriteria({ name: 'vegan friendly', ends: ['bad', 'good'] })
                 }
-              }} className="w-[400px]">
+              }} className="">
                 <TabsList>
                   <TabsTrigger value="price">Price</TabsTrigger>
                   <TabsTrigger value="vegan friendly">Vegan Friendly</TabsTrigger>
                 </TabsList>
               </Tabs>
+
+            </div>
+
+            <div className="flex items-center space-x-2">
+
+              <Button variant='secondary' size='icon'>
+                <Download className='text-foreground size-5' />
+              </Button>
+
 
             </div>
           </div>
