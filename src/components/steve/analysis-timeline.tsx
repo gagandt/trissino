@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { brandLinks } from '@/contants/brand-links'
 import Image from 'next/image'
-import { BrandItem } from '@/contants/brand-links'
+import type { BrandItem } from '@/contants/brand-links'
 import { ArrowLeft } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -52,14 +52,15 @@ export default function AnalysisTimeline() {
       <Button variant='ghost' className='w-fit' onClick={() => {
         router.push('/steve')
       }}>
-        <ArrowLeft />
-        <p>Re-Generate</p>
+        <ArrowLeft className='mr-2' />
       </Button>
-      <Card className="w-full">
+
+
+      <Card className="w-full mb-32">
         <CardContent className="p-6">
           <div className="mb-4">
-            <h2 className="text-2xl font-bold">Top organic skincare brands</h2>
-            <p className="text-sm text-muted-foreground">Keywords: Natural, Eco-friendly</p>
+            <h2 className="text-2xl font-bold">Burger Restaurants in Boston, Massachusetts</h2>
+            <p className="text-sm text-muted-foreground">Keywords: Vegan, Healthy</p>
           </div>
           <div className="flex justify-between items-center mb-4">
             <div className="flex space-x-2">
@@ -69,26 +70,26 @@ export default function AnalysisTimeline() {
                 if (value === 'price') {
                   setSelectedCriteria({ name: 'price', ends: ['high', 'low'] })
                 } else {
-                  setSelectedCriteria({ name: 'quality', ends: ['bad', 'good'] })
+                  setSelectedCriteria({ name: 'vegan friendly', ends: ['bad', 'good'] })
                 }
               }} className="w-[400px]">
                 <TabsList>
                   <TabsTrigger value="price">Price</TabsTrigger>
-                  <TabsTrigger value="quality">Quality</TabsTrigger>
+                  <TabsTrigger value="vegan friendly">Vegan Friendly</TabsTrigger>
                 </TabsList>
               </Tabs>
 
             </div>
           </div>
 
-          <div className="relative flex">
-            <div className="w-24 flex flex-col items-center justify-between py-4 bg-secondary rounded-l-lg">
-              <span className="text-sm font-semibold uppercase">{selectedCriteria.ends[0]}</span>
-              <span className="text-lg font-bold capitalize rotate-[-90deg]">{selectedCriteria.name}</span>
-              <span className="text-sm font-semibold uppercase">{selectedCriteria.ends[1]}</span>
+          <div className="relative flex gap-4">
+            <div className="w-24 flex flex-col ont-light items-center justify-between py-4 bg-secondary rounded-lg bg-gradient-to-b from-green-100 via-yellow-100 to-red-100">
+              <span className="text-sm uppercase">{selectedCriteria.ends[0]}</span>
+              <span className="text-lg w-[200px] text-center capitalize rotate-[-90deg]">{selectedCriteria.name}</span>
+              <span className="text-sm uppercase">{selectedCriteria.ends[1]}</span>
             </div>
-            <div className='w-8 bg-gradient-to-b from-green-100 via-yellow-100 to-red-100' />
-            <div className="flex-1 overflow-x-auto rounded-r-lg p-4 border">
+
+            <div className="flex-1 overflow-x-auto rounded-lg p-4 border">
               {divisions.map(([division, brands], index: number) => (
                 <div key={division} className="mb-4">
                   <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pb-4 ${index !== divisions.length - 1 ? 'border-b' : ''}`}>
