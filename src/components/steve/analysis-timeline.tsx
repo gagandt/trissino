@@ -8,6 +8,9 @@ import Image from 'next/image'
 import { BrandItem } from '@/contants/brand-links'
 import { ArrowLeft } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+
 interface Brand {
   name: string
   division: number
@@ -20,9 +23,10 @@ interface Criteria {
 
 export default function AnalysisTimeline() {
   const router = useRouter()
+  const [criteriaType, setCriteriaType] = React.useState('price');
   const [selectedCriteria, setSelectedCriteria] = React.useState<Criteria>({
     name: 'price',
-    ends: ['low', 'high']
+    ends: ['high', 'low',]
   })
 
   function groupBrandsByDivision(brands: BrandItem[]) {
@@ -59,18 +63,21 @@ export default function AnalysisTimeline() {
           </div>
           <div className="flex justify-between items-center mb-4">
             <div className="flex space-x-2">
-              <Button
-                variant={selectedCriteria.name === 'price' ? 'default' : 'outline'}
-                onClick={() => setSelectedCriteria({ name: 'price', ends: ['low', 'high'] })}
-              >
-                Price
-              </Button>
-              <Button
-                variant={selectedCriteria.name === 'quality' ? 'default' : 'outline'}
-                onClick={() => setSelectedCriteria({ name: 'quality', ends: ['bad', 'good'] })}
-              >
-                Quality
-              </Button>
+
+              <Tabs value={criteriaType} onValueChange={(value) => {
+                setCriteriaType(value);
+                if (value === 'price') {
+                  setSelectedCriteria({ name: 'price', ends: ['high', 'low'] })
+                } else {
+                  setSelectedCriteria({ name: 'quality', ends: ['bad', 'good'] })
+                }
+              }} className="w-[400px]">
+                <TabsList>
+                  <TabsTrigger value="price">Price</TabsTrigger>
+                  <TabsTrigger value="quality">Quality</TabsTrigger>
+                </TabsList>
+              </Tabs>
+
             </div>
           </div>
 
@@ -88,14 +95,16 @@ export default function AnalysisTimeline() {
                     {brands.map((brand: BrandItem, idx: number) => (
                       <Card
                         key={idx}
+                        className='flex items-center h-[80px]'
                       >
-                        <CardContent className="p-4">
+                        <CardContent className="p-4 w-full">
                           <div className="flex items-center space-x-2">
                             <Image
                               src={brand.logo}
                               alt={brand.name}
-                              width={32}
-                              height={32}
+                              width={48}
+                              height={48}
+                              className='object-contain rounded-lg'
                             />
                             <p className="font-semibold text-sm">{brand.name}</p>
                           </div>
