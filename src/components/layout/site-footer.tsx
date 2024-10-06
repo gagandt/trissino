@@ -65,7 +65,7 @@ export default function SiteFooter() {
             </Button> */}
           </div>
           <p className="text-center text-muted-foreground">
-            © <a href="https://palladioai.com">Palladio AI</a>. All rights
+            © <a href="https://trissinoai.com">Trissino AI</a>. All rights
             reserved. 2024-present.
           </p>
         </Container>

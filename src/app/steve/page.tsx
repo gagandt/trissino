@@ -3,17 +3,16 @@
 import React, { useState } from "react";
 import AnalysisLoader from "@/components/ui/analysis-loader";
 import SteveUrls from "@/components/steve/urls-panel";
-import { PlaceholdersAndVanishInput } from "@/components/ui/placeholder-vanish-input";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import InstructionFilterCard from "@/components/steve/instruction-filter-card";
 import PromptFilterCard from "@/components/steve/prompt-filter-card";
 
-type promptTypes = 'PROMPT' | 'INSTRUCTION';
+export type PromptTypes = 'PROMPT' | 'INSTRUCTION';
 
 const page = () => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isOpen, setIsOpen] = useState<boolean>(false)
-  const [promptType, setPromptType] = useState<promptTypes>('PROMPT');
+  const [isLoading] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState(false)
+  const [promptType, setPromptType] = useState<PromptTypes>('PROMPT');
 
 
   return (
@@ -22,7 +21,7 @@ const page = () => {
       <div className="w-full mt-16 max-w-3xl flex flex-col gap-3">
 
         <Tabs value={promptType} onValueChange={(value) => {
-          setPromptType(value as promptTypes);
+          setPromptType(value as PromptTypes);
         }} className="w-[400px]">
           <TabsList>
             <TabsTrigger value="PROMPT">Prompt</TabsTrigger>
@@ -34,7 +33,7 @@ const page = () => {
         ) : (
           <InstructionFilterCard setIsOpen={setIsOpen} />
         )}
-        <SteveUrls isOpen={isOpen} setIsOpen={setIsOpen} />
+        <SteveUrls isOpen={isOpen} setIsOpen={setIsOpen} promptType={promptType} />
       </div>
     </div>
   );

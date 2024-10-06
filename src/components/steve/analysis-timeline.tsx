@@ -3,7 +3,7 @@
 import React from 'react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { brandLinks } from '@/contants/brand-links'
+import { burgerLinks } from '@/contants/brand-links'
 import Image from 'next/image'
 import type { BrandItem } from '@/contants/brand-links'
 import { ArrowLeft } from 'lucide-react'
@@ -40,7 +40,7 @@ export default function AnalysisTimeline() {
     }, {} as Record<number, BrandItem[]>);
   }
 
-  const BRANDS = brandLinks.map(brand => ({
+  const BRANDS = burgerLinks.map(brand => ({
     ...brand,
     division: Math.floor(Math.random() * 3) + 1 // Randomly assign division 1, 2, or 3
   }))

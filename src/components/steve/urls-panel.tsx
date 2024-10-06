@@ -8,36 +8,48 @@ import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/componen
 import { Input } from "@/components/ui/input"
 import Link from 'next/link'
 import Image from 'next/image'
-import { brandLinks } from '@/contants/brand-links'
 import { useRouter } from 'next/navigation'
+import { type BrandItem, burgerLinks, skincareLinks } from '@/contants/brand-links'
+import type { PromptTypes } from '@/app/steve/page'
 
 interface PropsTypes {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  promptType: PromptTypes;
 }
 
 
 export default function SteveUrls(props: PropsTypes) {
-  const { isOpen, setIsOpen } = props;
-
   const router = useRouter();
 
+  const { isOpen, setIsOpen, promptType } = props;
   const [isLoading, setIsLoading] = useState(false)
-  const [urls, setUrls] = useState(brandLinks)
+  const [urls, setUrls] = useState<BrandItem[]>([]);
   const [editingIndex, setEditingIndex] = useState(-1)
+
+  useEffect(() => {
+    if (promptType === 'PROMPT') {
+      setUrls(skincareLinks)
+    } else {
+      setUrls(burgerLinks)
+    }
+  }, [promptType])
 
   useEffect(() => {
     if (isOpen) {
       setIsLoading(true)
-      const timer = setTimeout(() => {
-        setIsLoading(false)
-      }, 500)
-      return () => clearTimeout(timer)
+      const delayTimer = setTimeout(() => {
+        const loadingTimer = setTimeout(() => {
+          setIsLoading(false)
+        }, 400 + Math.random() * 600)
+        return () => clearTimeout(loadingTimer)
+      }, 2000)
+      return () => clearTimeout(delayTimer)
     }
   }, [isOpen])
 
   const addUrl = () => {
-    setUrls([...urls, { name: `New Example ${urls.length + 1}`, url: 'https://newexample.com', logo: '', division: 1 }])
+    setUrls([...urls, { name: `New Example ${urls.length + 1}`, url: 'https://acme.org', logo: '', division: 1 }])
   }
 
   const removeUrl = (index: number) => {
@@ -99,7 +111,7 @@ export default function SteveUrls(props: PropsTypes) {
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: -20 }}
-                          transition={{ delay: index * 0.05 }}
+                          transition={{ delay: index * 0.2 + Math.random() * 0.3 }}
                           className="bg-muted rounded-md p-3 mb-3 flex items-center"
                         >
                           <div className="flex-shrink-0 mr-4">

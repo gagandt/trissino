@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { brandLinks } from "@/contants/brand-links";
+import { burgerLinks } from "@/contants/brand-links";
 
 interface PropsTypes {
   isLoading: boolean;
@@ -13,7 +13,7 @@ export default function AnalysisLoader(props: PropsTypes) {
   const [currentItem, setCurrentItem] = useState(0);
   const [progress, setProgress] = useState(0);
 
-  const totalItems = brandLinks?.length;
+  const totalItems = burgerLinks?.length;
 
   useEffect(() => {
     if (currentItem < totalItems && isLoading) {
@@ -26,7 +26,7 @@ export default function AnalysisLoader(props: PropsTypes) {
         clearTimeout(timer);
       };
     }
-  }, [currentItem, isLoading]);
+  }, [currentItem, isLoading, totalItems]);
 
   return (
     <div
@@ -61,7 +61,7 @@ export default function AnalysisLoader(props: PropsTypes) {
               <>
                 Analyzing item{" "}
                 <span className="font-bold text-blue-500">
-                  {brandLinks?.[currentItem]?.url}
+                  {burgerLinks?.[currentItem]?.url}
                 </span>
               </>
             ) : (
@@ -72,7 +72,7 @@ export default function AnalysisLoader(props: PropsTypes) {
         <motion.div
           className="mx-auto h-16 w-16 rounded-full border-4 border-blue-500 border-t-transparent"
           animate={{ rotate: 360 }}
-          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+          transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
         />
       </div>
     </div>
