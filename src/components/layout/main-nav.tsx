@@ -34,9 +34,10 @@ export function MainNav() {
       <Link href="/" className="mr-6 hidden items-center space-x-2 md:flex">
         {/* <Image src="/logo.webp" alt="" width={40} height={40} /> */}
         {/* < className="h-6 w-6" /> */}
-        <span className="hidden font-bold lg:inline-block">
+        <h1 className="mx-0 max-w-[43.5rem] text-balance text-3xl font-semibold tracking-tighter">
+
           {siteConfig.name}
-        </span>
+        </h1>
       </Link>
       <NavItems isMobile={false} />
       <Sheet>

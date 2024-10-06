@@ -28,6 +28,12 @@ const PromptFilterCard = (props: { setIsOpen: (isOpen: boolean) => void }) => {
         }
     }
 
+    const placeholders = [
+        "Research about burger joints in Austin Texas and categorize on pricing",
+        "Categorize the different female fast fashion brands in London, categorize their pricing",
+        "Research about the top Sushi Chains Tokyo, Japan and categorize on quality and service",
+    ]
+
     return (
         <Card className="w-full">
             <CardHeader>
@@ -46,7 +52,7 @@ const PromptFilterCard = (props: { setIsOpen: (isOpen: boolean) => void }) => {
                     </FormFieldContainer>
                     <FormFieldContainer label="Enter/Select Keywords">
                         <PlaceholdersAndVanishInput
-                            placeholders={["Research about burger joints in Austin Texas and categorize on pricing", "Search for a job"]}
+                            placeholders={placeholders}
                             onChange={(e) => setPrompt(e.target.value)}
                             onSubmit={onSubmitPrompt}
                         />

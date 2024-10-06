@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { brandLinks } from "@/contants/brand-links";
+import { burgerLinks } from "@/contants/brand-links";
 
 interface PropsTypes {
   isLoading: boolean;
@@ -12,7 +12,7 @@ let progress = 0;
 export default function AnalysisLoader(props: PropsTypes) {
   const { isLoading } = props;
   const [currentItem, setCurrentItem] = useState(0);
-  const totalItems = brandLinks?.length;
+  const totalItems = burgerLinks?.length;
 
   useEffect(() => {
     if (currentItem < totalItems && isLoading) {
@@ -68,7 +68,7 @@ export default function AnalysisLoader(props: PropsTypes) {
               <>
                 Analyzing item{" "}
                 <span className="font-bold text-blue-500">
-                  {brandLinks?.[currentItem]?.url}
+                  {burgerLinks?.[currentItem]?.url}
                 </span>
               </>
             ) : (

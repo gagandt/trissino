@@ -32,13 +32,29 @@ export interface StateType {
 
 const keywordsList = [
   {
-    label: "Keyword 1",
+    label: "Vegan",
     value: "keyword1",
   },
   {
-    label: "Keyword 2",
+    label: "Ethically Sourced",
     value: "keyword2",
   },
+  {
+    label: "Gluten-Free",
+    value: "keyword3",
+  },
+  {
+    label: "Organic",
+    value: "keyword4",
+  },
+  {
+    label: "Non-GMO",
+    value: "keyword5",
+  },
+  {
+    label: "Healthy",
+    value: "keyword6",
+  }
 ];
 
 const InstructionFilterCard = (props: { setIsOpen: (isOpen: boolean) => void }) => {

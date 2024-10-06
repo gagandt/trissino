@@ -14,7 +14,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 p-1 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-14 max-w-screen-2xl items-center">
+      <div className="container mx-auto flex h-14 md:flex md:max-w-2xl xl:max-w-6xl items-center">
         <MainNav />
         <div className="flex flex-1 items-center justify-end space-x-4">
           <nav className="flex items-center space-x-6">
