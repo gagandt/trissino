@@ -37,6 +37,11 @@ export default function RootLayout({
       }}
     >
       <html lang="en" suppressHydrationWarning>
+      <head>
+        <title>Steve - AI-Powered Business Analysis</title>
+        <meta name="description" content="Explore Steve's AI-driven business analysis tools for data-driven insights and strategic decision-making." />
+        <link rel="icon" href="logo.png" type="image/png" />
+      </head>
         <body
           className={cn(
             "min-h-screen bg-background font-sans antialiased",
