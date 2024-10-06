@@ -16,13 +16,14 @@ interface PropsTypes {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   promptType: PromptTypes;
+  setAnalysisLoading: (isLoading: boolean) => void;
 }
 
 
 export default function SteveUrls(props: PropsTypes) {
   const router = useRouter();
 
-  const { isOpen, setIsOpen, promptType } = props;
+  const { isOpen, setIsOpen, promptType, setAnalysisLoading } = props;
   const [isLoading, setIsLoading] = useState(false)
   const [urls, setUrls] = useState<BrandItem[]>([]);
   const [editingIndex, setEditingIndex] = useState(-1)
@@ -187,7 +188,11 @@ export default function SteveUrls(props: PropsTypes) {
               <CardFooter>
                 <Button onClick={() => {
                   setIsOpen(false);
-                  router.push('/steve/analysis');
+                  setAnalysisLoading(true);
+                  setTimeout(() => {
+                    setAnalysisLoading(false);
+                    router.push('/steve/analysis');
+                  }, 3500);
                 }} className='w-full'>
                   Start Analysis
                 </Button>
