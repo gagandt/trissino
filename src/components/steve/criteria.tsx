@@ -2,8 +2,9 @@ import React, { ChangeEvent } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ArrowRightIcon, DeleteIcon, Minus, Plus, Trash2, X } from "lucide-react";
-import { CriteriaType, FormFieldContainer } from "./instruction-filter-card";
+import { FormFieldContainer } from "./instruction-filter-card";
 import { Button } from "../ui/button";
+import type { CriteriaType } from "@/stores/steve-analysis-query-store";
 
 interface PropTypes {
   idx: number;

@@ -10,7 +10,7 @@ export function PlaceholdersAndVanishInput({
   onSubmit,
 }: {
   placeholders: string[];
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }) {
   const [currentPlaceholder, setCurrentPlaceholder] = useState(0);
@@ -44,7 +44,7 @@ export function PlaceholdersAndVanishInput({
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const newDataRef = useRef<any[]>([]);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   const [value, setValue] = useState("");
   const [animating, setAnimating] = useState(false);
 
@@ -149,7 +149,7 @@ export function PlaceholdersAndVanishInput({
     animateFrame(start);
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && value && !animating) {
       vanishAndSubmit();
     }
@@ -199,7 +199,6 @@ export function PlaceholdersAndVanishInput({
         onKeyDown={handleKeyDown}
         ref={inputRef}
         value={value}
-        type="text"
         data-enable-grammarly="false"
         className={cn(
           "w-full relative resize-none text-sm sm:text-base z-50 border-none dark:text-white bg-transparent text-black h-full focus:outline-none focus:ring-0 pl-6 py-6 pr-20",
