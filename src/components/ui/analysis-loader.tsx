@@ -8,32 +8,25 @@ interface PropsTypes {
   isLoading: boolean;
 }
 
-let progress = 0;
 export default function AnalysisLoader(props: PropsTypes) {
   const { isLoading } = props;
   const [currentItem, setCurrentItem] = useState(0);
+  const [progress, setProgress] = useState(0);
+
   const totalItems = brandLinks?.length;
 
   useEffect(() => {
     if (currentItem < totalItems && isLoading) {
       const timer = setTimeout(() => {
         setCurrentItem((prev) => prev + 1);
-        progress = (currentItem + 1) * 10;
+        setProgress((prev) => Math.min(prev + 10, 90));
       }, 2000);
 
       return () => {
-        console.log("rannnn");
         clearTimeout(timer);
-        progress = 0;
       };
     }
   }, [currentItem, isLoading]);
-
-  useEffect(() => {
-    return () => {
-      console.log("rannnnn");
-    };
-  }, []);
 
   return (
     <div

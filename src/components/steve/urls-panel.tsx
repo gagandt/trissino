@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input"
 import Link from 'next/link'
 import Image from 'next/image'
 import { brandLinks } from '@/contants/brand-links'
+import { useRouter } from 'next/navigation'
 
 interface PropsTypes {
   isOpen: boolean;
@@ -18,6 +19,9 @@ interface PropsTypes {
 
 export default function SteveUrls(props: PropsTypes) {
   const { isOpen, setIsOpen } = props;
+
+  const router = useRouter();
+
   const [isLoading, setIsLoading] = useState(false)
   const [urls, setUrls] = useState(brandLinks)
   const [editingIndex, setEditingIndex] = useState(-1)
@@ -33,7 +37,7 @@ export default function SteveUrls(props: PropsTypes) {
   }, [isOpen])
 
   const addUrl = () => {
-    setUrls([...urls, { name: `New Example ${urls.length + 1}`, url: 'https://newexample.com', logo: '' }])
+    setUrls([...urls, { name: `New Example ${urls.length + 1}`, url: 'https://newexample.com', logo: '', division: 1 }])
   }
 
   const removeUrl = (index: number) => {
@@ -169,7 +173,10 @@ export default function SteveUrls(props: PropsTypes) {
               </CardContent>
 
               <CardFooter>
-                <Button onClick={() => setIsOpen(false)} className='w-full'>
+                <Button onClick={() => {
+                  setIsOpen(false);
+                  router.push('/steve/analysis');
+                }} className='w-full'>
                   Start Analysis
                 </Button>
               </CardFooter>

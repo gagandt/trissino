@@ -12,7 +12,7 @@ type promptTypes = 'PROMPT' | 'INSTRUCTION';
 
 const page = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState<boolean>(false)
   const [promptType, setPromptType] = useState<promptTypes>('PROMPT');
 
 

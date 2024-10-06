@@ -14,86 +14,102 @@ import PaneraBreadLogo from '../../public/images/logo/Panera-Bread.png';
 import McDonaldsLogo from '../../public/images/logo/mcd.png';
 import KFCLogo from '../../public/images/logo/KFC.png';
 
-interface BrandItem {
+export interface BrandItem {
   name: string;
   url: string;
   logo: any;
+  division: number;
 }
 
 export const brandLinks: BrandItem[] = [
   {
     name: "sweetgreen",
     url: "https://www.sweetgreen.com",
-    logo: SweetgreenLogo
+    logo: SweetgreenLogo,
+    division: 1
   },
   {
     name: "clover food lab",
     url: "https://www.cloverfoodlab.com",
     logo: CloverLogo,
+    division: 1,
   },
   {
     name: "B.GOOD",
     url: "https://www.bgood.com",
-    logo: BGoodLogo
+    logo: BGoodLogo,
+    division: 1,
   },
   {
     name: "FIVE GUYS",
     url: "https://www.fiveguys.com",
-    logo: FiveGuysLogo
+    logo: FiveGuysLogo,
+    division: 1,
   },
   {
     name: "Shake Shack",
     url: "https://www.shakeshack.com",
-    logo: ShakeShackLogo
+    logo: ShakeShackLogo,
+    division: 1,
   },
   {
     name: "Tasty Burger",
     url: "https://www.tastyburger.com",
-    logo: TastyBurgerLogo
+    logo: TastyBurgerLogo,
+    division: 2,
   },
   {
     name: "Wild Willy's Burgers",
     url: "http://www.wildwillysburgers.com",
-    logo: WildWillysLogo
+    logo: WildWillysLogo,
+    division: 2,
   },
   {
     name: "Mainely Burgers",
     url: "https://www.mainelyburgers.com",
-    logo: MainelyBurgersLogo
+    logo: MainelyBurgersLogo,
+    division: 2,
   },
   {
     name: "Jersey Mike's Subs",
     url: "https://www.jerseymikes.com",
-    logo: JerseyMikesLogo
+    logo: JerseyMikesLogo,
+    division: 2,
   },
   {
     name: "Doherty's East Ave Irish Pub",
     url: "https://www.dohertysirishpubnc.com/",
-    logo: DohertysLogo
+    logo: DohertysLogo,
+    division: 3,
   },
   {
     name: "Gregg's Restaurant",
     url: "https://www.greggsusa.com",
-    logo: GreggsLogo
+    logo: GreggsLogo,
+    division: 3,
   },
   {
     name: "Halfway Café",
     url: "https://www.thehalfwaycafe.com",
-    logo: HalfwayLogo
+    logo: HalfwayLogo,
+    division: 3,
   },
   {
     name: "Panera Bread",
     url: "https://www.panerabread.com",
-    logo: PaneraBreadLogo
+    logo: PaneraBreadLogo,
+    division: 3,
   },
   {
     name: "McDonald's",
     url: "https://www.mcdonalds.com",
-    logo: McDonaldsLogo
+    logo: McDonaldsLogo,
+    division: 3,
   },
   {
     name: "KFC",
     url: "https://www.kfc.com/",
-    logo: KFCLogo
+    logo: KFCLogo,
+    division: 3
   }
 ];
