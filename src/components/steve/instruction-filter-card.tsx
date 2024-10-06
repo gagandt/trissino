@@ -18,17 +18,7 @@ import CriteriaPanel from "./criteria-panel";
 import usCities from "@/contants/us_states_wise_cities.json";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-
-export interface CriteriaType {
-  criteriaType: string;
-  ends: string[];
-  noOfDivisions: number;
-}
-
-export interface StateType {
-  term: string;
-  city: string;
-}
+import { SteveAnalysisQueryStore, useSteveAnalysisQueryStore } from "@/stores/steve-analysis-query-store";
 
 const keywordsList = [
   {
@@ -62,19 +52,9 @@ const InstructionFilterCard = (props: { setIsOpen: (isOpen: boolean) => void }) 
 
   const { toast } = useToast();
 
-  const [state, setState] = useState<StateType>({
-    term: "",
-    city: "",
-  });
-  const [selectedKeywords, setSelectedkeywords] = useState<string[]>([]);
-  const [selectedCriterias, setSelectedCriterias] = useState<CriteriaType[]>([
-    {
-      criteriaType: "",
-      ends: ["low", "high"],
-      noOfDivisions: 4,
-    },
-  ]);
-
+  const steveAnalysisQueryStore = useSteveAnalysisQueryStore(state => state);
+  const { term, city, keywords, criterias } = steveAnalysisQueryStore;
+  
   const US_CITIES = useMemo(() => {
     return usCities?.reduce((acc: Option[], city: string) => {
       acc?.push({
@@ -86,16 +66,17 @@ const InstructionFilterCard = (props: { setIsOpen: (isOpen: boolean) => void }) 
   }, [usCities]);
 
   const handleSubmitClick = () => {
-    if (!state.term) {
+    if (!term) {
       toast({
         variant: "default",
         title: "Please Enter Search Term",
         description: "",
+        className: 'mt-4 bg-red-500',
         // action: <ToastAction altText="Try again">Try again</ToastAction>,
       });
       return;
     }
-    if (!state.city) {
+    if (!city) {
       toast({
         variant: "default",
         title: "Please Select a City",
@@ -122,14 +103,9 @@ const InstructionFilterCard = (props: { setIsOpen: (isOpen: boolean) => void }) 
           <div className="grid grid-cols-2 gap-4">
             <FormFieldContainer className="w-full" label="Search Term">
               <Input
-                value={state?.term}
+                value={term}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                  setState((prev: StateType) => {
-                    return {
-                      ...prev,
-                      term: e.target.value,
-                    };
-                  });
+                  steveAnalysisQueryStore.setTerm(e.target.value);
                 }}
                 className="flex-1"
               />
@@ -138,12 +114,9 @@ const InstructionFilterCard = (props: { setIsOpen: (isOpen: boolean) => void }) 
             <FormFieldContainer className="flex-1" label="Select City">
               <SearchableSelect
                 label="Select City"
-                value={state?.city}
+                value={city}
                 handleChange={(value: string) => {
-                  setState({
-                    ...state,
-                    city: value,
-                  });
+                  steveAnalysisQueryStore.setCity(value);
                 }}
                 optionsData={US_CITIES}
                 className="flex-1"
@@ -154,8 +127,8 @@ const InstructionFilterCard = (props: { setIsOpen: (isOpen: boolean) => void }) 
           <FormFieldContainer label="Enter/Select Keywords">
             <MultiSelect
               options={keywordsList}
-              onValueChange={setSelectedkeywords}
-              defaultValue={selectedKeywords}
+              onValueChange={steveAnalysisQueryStore.setKeywords}
+              defaultValue={keywords}
               placeholder="Select Keywords"
               variant="inverted"
               animation={2}
@@ -164,8 +137,8 @@ const InstructionFilterCard = (props: { setIsOpen: (isOpen: boolean) => void }) 
             />
           </FormFieldContainer>
           <CriteriaPanel
-            criterias={selectedCriterias}
-            setCriterias={setSelectedCriterias}
+            criterias={criterias}
+            setCriterias={steveAnalysisQueryStore.setCriterias}
           />
         </div>
       </CardContent>
