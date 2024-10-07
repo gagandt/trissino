@@ -1,15 +1,14 @@
 "use client";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import React, { ChangeEvent, useMemo, useState } from "react";
+import type { ChangeEvent } from "react"; // Use import type for type-only imports
+import React from "react";
 import { Button } from "../ui/button";
 import Criteria from "./criteria";
-import { Plus, PlusCircle } from "lucide-react";
-import { CriteriaType } from "@/stores/steve-analysis-query-store";
+import { PlusCircle } from "lucide-react";
+import type { CriteriaType } from "@/stores/steve-analysis-query-store";
 
 interface PropsTypes {
   criterias: CriteriaType[];
-  setCriterias: Function;
+  setCriterias: (criterias: CriteriaType[]) => void; // Define function type explicitly
 }
 
 const CriteriaPanel = (props: PropsTypes) => {
@@ -50,16 +49,16 @@ const CriteriaPanel = (props: PropsTypes) => {
     setCriterias(newCriterias);
   };
 
-  const handleCriteriaClick = (e: any) => {
-    const closesDiv = e.target.closest("div");
+  const handleCriteriaClick = (e: React.MouseEvent<HTMLDivElement>) => { // Specify the event type
+    const closesDiv = (e.target as HTMLElement).closest("div");
     if (
-      closesDiv.dataset.type === "criteria" &&
+      closesDiv?.dataset.type === "criteria" &&
       closesDiv.dataset.action === "delete"
     ) {
       const newCriterias = criterias?.filter((k: CriteriaType, idx: number) => {
-        return idx !== parseInt(closesDiv.dataset.index, 10);
+        return idx !== parseInt(closesDiv.dataset.index ?? '', 10);
       });
-      setCriterias(newCriterias);
+      setCriterias(newCriterias ?? []);
     }
   };
 
@@ -108,6 +107,7 @@ const CriteriaPanel = (props: PropsTypes) => {
           {criterias?.map((ele: CriteriaType, idx: number) => {
             return (
               <Criteria
+                key={idx} // Add key prop
                 idx={idx}
                 criteria={ele}
                 handleCriteriaInput={handleCriteriaInput}

@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import AnalysisLoader from "@/components/ui/analysis-loader";
 import SteveUrls from "@/components/steve/urls-panel";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import InstructionFilterCard from "@/components/steve/instruction-filter-card";
@@ -20,13 +19,10 @@ const loadingStates = [
   { text: 'Compiling comprehensive brand report' }
 ];
 
-const page = () => {
+const Page = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
   const [promptType, setPromptType] = useState<PromptTypes>('PROMPT');
-
-  console.log("isLoading", isLoading);
-  
 
   return (
     <div className="flex min-h-screen flex-col items-center pb-32">
@@ -52,4 +48,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

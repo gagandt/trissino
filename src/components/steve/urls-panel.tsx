@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Loader2, Plus, Trash2, Edit2, SquareArrowOutUpRight, ImageIcon, FileImageIcon } from 'lucide-react'
+import { Loader2, Plus, Trash2, Edit2, SquareArrowOutUpRight, FileImageIcon } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -63,7 +63,7 @@ export default function SteveUrls(props: PropsTypes) {
 
   const handleEdit = (index: number, newValue: string) => {
     const newUrls = [...urls]
-    newUrls[index]!.url = newValue
+    newUrls[index]!.url = newValue as string; // Ensure the value is a string
     setUrls(newUrls)
   }
 

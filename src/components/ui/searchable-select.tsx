@@ -1,19 +1,8 @@
 "use client";
 import React, { useState } from "react";
 import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-import {
   Check,
-  ChevronDownIcon,
   ChevronsUpDown,
-  SearchIcon,
 } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 import { Button } from "./button";
@@ -34,18 +23,16 @@ export interface Option {
 }
 
 interface PropsTypes {
-  className?: string;
   label?: string;
   optionsData?: Option[];
   value: string;
-  handleChange: Function;
+  handleChange: (value: string) => void; // Defined function type
 }
 
 const SearchableSelect = (props: PropsTypes) => {
   const {
     optionsData = [],
-    className,
-    handleChange = () => { },
+    handleChange = () => {}, // Provided a default empty function
     value,
     label = "Select",
   } = props;

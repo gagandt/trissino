@@ -8,16 +8,11 @@ import Image from 'next/image'
 import type { BrandItem } from '@/contants/brand-links'
 import { ArrowLeft, ExternalLink, X } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AnimatePresence, motion } from 'framer-motion'
 import { useOutsideClick } from '@/hooks/use-outside-click'
 import { useSteveAnalysisQueryStore } from '@/stores/steve-analysis-query-store'
 import { FileChartLine, Download } from "lucide-react";
-
-interface Brand {
-  name: string
-  division: number
-}
 
 interface Criteria {
   name: string
@@ -33,7 +28,6 @@ export default function AnalysisTimeline() {
 
   const steveAnalysisQueryStore = useSteveAnalysisQueryStore(state => state);
   const { term, city, keywords, criterias } = steveAnalysisQueryStore;
-
 
   const [selectedCriteria, setSelectedCriteria] = React.useState<Criteria>({
     name: '',
@@ -52,9 +46,9 @@ export default function AnalysisTimeline() {
 
   useEffect(() => {
     setSelectedCriteria({
-      name: criterias[0]?.criteriaType || '',
-      ends: criterias[0]?.ends || [],
-      noOfDivisions: criterias[0]?.noOfDivisions || 0
+      name: criterias[0]?.criteriaType ?? '',
+      ends: criterias[0]?.ends ?? [],
+      noOfDivisions: criterias[0]?.noOfDivisions ?? 0
     })
   }, [criterias])
 
@@ -175,7 +169,7 @@ export default function AnalysisTimeline() {
                       <div>
                         <p className='text-sm font-bold'>Relevance to Search:</p>
                         <ul className='list-disc pl-5 text-sm'>
-                          <li>Matches keyword: "{keywords.find(keyword => active.name.toLowerCase().includes(keyword.toLowerCase())) || 'burger'}"</li>
+                          <li>Matches keyword: "{keywords.find(keyword => active.name.toLowerCase().includes(keyword.toLowerCase())) ?? 'burger'}"</li>
                           <li>Located in or serves: {city}</li>
                           <li>Aligns with {selectedCriteria.name} criteria: {selectedCriteria.ends[active.division - 1]}</li>
                         </ul>
@@ -217,7 +211,7 @@ export default function AnalysisTimeline() {
               <div className="flex items-center space-x-2">
               <FileChartLine className='text-muted-foreground' />
 
-                <Tabs value={(selectedCriteria as Criteria).name} onValueChange={(value) => {
+                <Tabs value={selectedCriteria.name} onValueChange={(value) => {
                   const criteria = criterias.find(criteria => criteria.criteriaType === value);
                   if (criteria) {
                     setSelectedCriteria({
@@ -248,9 +242,9 @@ export default function AnalysisTimeline() {
 
             <div className="relative flex gap-4">
               <div className="w-24 flex flex-col ont-light items-center justify-between py-4 bg-secondary rounded-lg bg-gradient-to-b from-green-100 via-yellow-100 to-red-100">
-                <span className="text-sm uppercase dark:text-neutral-800">{(selectedCriteria as Criteria).ends[0]}</span>
-                <span className="text-lg w-[200px] text-center capitalize rotate-[-90deg] dark:text-neutral-800">{(selectedCriteria as Criteria).name}</span>
-                <span className="text-sm uppercase dark:text-neutral-800">{(selectedCriteria as Criteria).ends[1]}</span>
+                <span className="text-sm uppercase dark:text-neutral-800">{selectedCriteria.ends[0]}</span>
+                <span className="text-lg w-[200px] text-center capitalize rotate-[-90deg] dark:text-neutral-800">{selectedCriteria.name}</span>
+                <span className="text-sm uppercase dark:text-neutral-800">{selectedCriteria.ends[1]}</span>
               </div>
 
               <div className="flex-1 overflow-x-auto rounded-lg p-4 border">

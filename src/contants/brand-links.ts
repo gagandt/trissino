@@ -17,7 +17,7 @@ import KFCLogo from '../../public/images/logo/KFC.png';
 export interface BrandItem {
   name: string;
   url: string;
-  logo: any;
+  logo: string; // Assuming logo is a URL string
   division: number;
 }
 

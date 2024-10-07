@@ -1,16 +1,17 @@
-import React, { ChangeEvent } from "react";
+import React from "react";
+import type { ChangeEvent } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowRightIcon, DeleteIcon, Minus, Plus, Trash2, X } from "lucide-react";
+import { ArrowRightIcon, Minus, Plus, Trash2 } from "lucide-react";
 import { FormFieldContainer } from "./instruction-filter-card";
 import { Button } from "../ui/button";
 import type { CriteriaType } from "@/stores/steve-analysis-query-store";
 
 interface PropTypes {
   idx: number;
-  handleCriteriaInput: Function;
-  handleIncrementDivisions: Function;
-  handleDecrementDivisions: Function;
+  handleCriteriaInput: (event: ChangeEvent<HTMLInputElement>, index: number) => void;
+  handleIncrementDivisions: (index: number) => void;
+  handleDecrementDivisions: (index: number) => void;
   criteria: CriteriaType;
 }
 
@@ -107,11 +108,7 @@ const Criteria = (props: PropTypes) => {
             <Trash2 className="h-5" />
           </div>
         </div>
-
-
       </FormFieldContainer>
-
-
     </div>
   );
 };

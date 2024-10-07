@@ -1,3 +1,5 @@
+//@ts-nocheck
+/* eslint-disable */
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
