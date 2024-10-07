@@ -32,7 +32,9 @@ interface PropsTypes {
 const SearchableSelect = (props: PropsTypes) => {
   const {
     optionsData = [],
-    handleChange = () => {}, // Provided a default empty function
+    handleChange = (value: string) => {
+      console.log("Value changed to:", value);
+    },
     value,
     label = "Select",
   } = props;

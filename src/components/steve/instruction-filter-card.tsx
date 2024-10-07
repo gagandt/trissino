@@ -110,7 +110,6 @@ const InstructionFilterCard = (props: { setIsOpen: (isOpen: boolean) => void }) 
                   steveAnalysisQueryStore.setCity(value);
                 }}
                 optionsData={US_CITIES}
-                className="flex-1"
               />
             </FormFieldContainer>
           </div>

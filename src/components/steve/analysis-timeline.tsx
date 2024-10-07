@@ -169,7 +169,7 @@ export default function AnalysisTimeline() {
                       <div>
                         <p className='text-sm font-bold'>Relevance to Search:</p>
                         <ul className='list-disc pl-5 text-sm'>
-                          <li>Matches keyword: "{keywords.find(keyword => active.name.toLowerCase().includes(keyword.toLowerCase())) ?? 'burger'}"</li>
+                          <li>Matches keyword: &quot;{keywords.find(keyword => active.name.toLowerCase().includes(keyword.toLowerCase())) ?? 'burger'}&quot;</li>
                           <li>Located in or serves: {city}</li>
                           <li>Aligns with {selectedCriteria.name} criteria: {selectedCriteria.ends[active.division - 1]}</li>
                         </ul>
