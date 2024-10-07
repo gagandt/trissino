@@ -1,9 +1,7 @@
-import { relations, sql } from "drizzle-orm";
+import { relations } from "drizzle-orm";
 import {
   index,
-  int,
   integer,
-  primaryKey,
   sqliteTable,
   sqliteTableCreator,
   text,
@@ -22,7 +20,7 @@ export const users = sqliteTable(
   {
     id: text("id").primaryKey().notNull(),
   },
-  (tb) => ({}),
+  () => ({}), // Removed unused parameter 'tb'
 );
 
 export const userApiKeys = sqliteTable(

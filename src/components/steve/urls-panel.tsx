@@ -63,7 +63,7 @@ export default function SteveUrls(props: PropsTypes) {
 
   const handleEdit = (index: number, newValue: string) => {
     const newUrls = [...urls]
-    newUrls[index]!.url = newValue as string; // Ensure the value is a string
+    newUrls[index]!.url = newValue; // Removed unnecessary type assertion
     setUrls(newUrls)
   }
 

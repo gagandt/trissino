@@ -1,5 +1,6 @@
 "use client";
-import React, { ChangeEvent, ReactNode, useMemo, useState } from "react";
+import React, { useMemo } from "react";
+import type { ChangeEvent, ReactNode } from "react"; // Use import type for types
 
 import {
   Card,
@@ -11,7 +12,8 @@ import {
 import { Button } from "../ui/button";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
-import SearchableSelect, { Option } from "../ui/searchable-select";
+import SearchableSelect from "../ui/searchable-select";
+import type { Option } from "../ui/searchable-select"; // Use import type for types
 import { MultiSelect } from "../ui/multi-select";
 import CriteriaPanel from "./criteria-panel";
 
@@ -61,7 +63,7 @@ const InstructionFilterCard = (props: { setIsOpen: (isOpen: boolean) => void }) 
       });
       return acc;
     }, []);
-  }, [usCities]);
+  }, []);
 
   const handleSubmitClick = () => {
     if (!term) {

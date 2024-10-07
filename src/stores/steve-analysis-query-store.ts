@@ -37,9 +37,9 @@ export const useSteveAnalysisQueryStore = create<SteveAnalysisQueryStore>((set) 
   setTerm: (term: string) => {
     console.log("term", term);
 
-    set((state) => ({ term: term }))
+    set((_state) => ({ term: term }))
   },
-  setCity: (city: string) => set((state) => ({ city })),
-  setKeywords: (keywords: string[]) => set((state) => ({ keywords })),
-  setCriterias: (criterias: CriteriaType[]) => set((state) => ({ criterias })),
+  setCity: (city: string) => set((_state) => ({ city })),
+  setKeywords: (keywords: string[]) => set((_state) => ({ keywords })),
+  setCriterias: (criterias: CriteriaType[]) => set((_state) => ({ criterias })),
 }))

@@ -1,4 +1,5 @@
-import { useEffect, RefObject } from "react"; // Use type-only import
+import { useEffect } from "react";
+import type { RefObject } from "react"; // Use type-only import
 
 export const useOutsideClick = (
   ref: RefObject<HTMLDivElement>,
