@@ -10,7 +10,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { type BrandItem, burgerLinks, skincareLinks } from '@/contants/brand-links'
-import type { PromptTypes } from '@/app/steve/page'
+import type { PromptTypes } from '@/app/page'
 
 interface PropsTypes {
   isOpen: boolean;
@@ -191,7 +191,7 @@ export default function SteveUrls(props: PropsTypes) {
                   setAnalysisLoading(true);
                   setTimeout(() => {
                     setAnalysisLoading(false);
-                    router.push('/steve/analysis');
+                    router.push('/analysis');
                   }, 3500);
                 }} className='w-full'>
                   Start Analysis

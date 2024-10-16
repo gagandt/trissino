@@ -19,6 +19,7 @@ import usCities from "@/contants/us_states_wise_cities.json";
 import { cn } from "@/lib/utils";
 import { useSteveAnalysisQueryStore } from "@/stores/steve-analysis-query-store";
 import { toast } from "sonner";
+import { ArrowRightIcon } from "lucide-react";
 
 const keywordsList = [
   {
@@ -52,7 +53,7 @@ const InstructionFilterCard = (props: { setIsOpen: (isOpen: boolean) => void }) 
 
   const steveAnalysisQueryStore = useSteveAnalysisQueryStore(state => state);
   const { term, city, keywords, criterias } = steveAnalysisQueryStore;
-  
+
   const US_CITIES = useMemo(() => {
     return usCities?.reduce((acc: Option[], city: string) => {
       acc?.push({

@@ -18,8 +18,8 @@ const CriteriaPanel = (props: PropsTypes) => {
   const handleAddCriteria = () => {
     const newCriteria = {
       criteriaType: "",
-      ends: ["low", "high"],
-      noOfDivisions: 4,
+      ends: ["Low", "High"],
+      noOfDivisions: 3,
     };
     if (criterias?.[0] && !criterias?.[0]?.criteriaType) return;
     const newCriterias = [newCriteria, ...criterias];
@@ -66,12 +66,12 @@ const CriteriaPanel = (props: PropsTypes) => {
   const handleIncrementDivisions = (idx: number) => {
     const newCriterias = criterias?.map((ele: CriteriaType, index: number) => {
       if (index === idx) {
-          return {
-            ...ele,
-            noOfDivisions: ele?.noOfDivisions + 1,
-          };
-        }
-        return ele;
+        return {
+          ...ele,
+          noOfDivisions: ele?.noOfDivisions + 1,
+        };
+      }
+      return ele;
     });
     setCriterias(newCriterias);
   };
@@ -79,12 +79,12 @@ const CriteriaPanel = (props: PropsTypes) => {
   const handleDecrementDivisions = (idx: number) => {
     const newCriterias = criterias?.map((ele: CriteriaType, index: number) => {
       if (index === idx) {
-          return {
-            ...ele,
-            noOfDivisions: ele?.noOfDivisions - 1,
-          };
-        }
-        return ele;
+        return {
+          ...ele,
+          noOfDivisions: ele?.noOfDivisions - 1,
+        };
+      }
+      return ele;
     });
     setCriterias(newCriterias);
   };
@@ -98,12 +98,13 @@ const CriteriaPanel = (props: PropsTypes) => {
           variant="outline"
           size="sm"
           onClick={handleAddCriteria}
+          className="group"
         >
-          <PlusCircle className="mr-2 h-4 w-4" />
+          <PlusCircle className="mr-2 h-4 w-4 transition-transform duration-300 group-hover:rotate-90" />
           Add Criteria
         </Button>
       </div>
-        {!!criterias?.length && (
+      {!!criterias?.length && (
         <div onClick={handleCriteriaClick} className="flex flex-col gap-7">
           {criterias?.map((ele: CriteriaType, idx: number) => {
             return (

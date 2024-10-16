@@ -30,8 +30,8 @@ export const useSteveAnalysisQueryStore = create<SteveAnalysisQueryStore>((set) 
   criterias: [
     {
       criteriaType: "",
-      ends: ["low", "high"],
-      noOfDivisions: 4,
+      ends: ["Low", "High"],
+      noOfDivisions: 3,
     },
   ],
   setTerm: (term: string) => {

@@ -48,7 +48,7 @@ const Criteria = (props: PropTypes) => {
               handleCriteriaInput(e, idx);
             }}
             value={criteria?.ends?.[0]}
-            className="min-w-20 flex-1"
+            className="min-w-24 flex-1"
             name="end1"
             autoComplete="off"
           />
@@ -58,7 +58,7 @@ const Criteria = (props: PropTypes) => {
               handleCriteriaInput(e, idx);
             }}
             value={criteria?.ends?.[1]}
-            className="min-w-20 flex-1"
+            className="min-w-24 flex-1"
             name="end2"
             autoComplete="off"
           />

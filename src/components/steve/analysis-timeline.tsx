@@ -46,7 +46,7 @@ export default function AnalysisTimeline() {
 
   useEffect(() => {
     if (!term) {
-      router.push('/steve');
+      router.push('/');
     }
   }, [term, router]);
 
@@ -120,7 +120,7 @@ export default function AnalysisTimeline() {
                   height={200}
                   src={active.logo}
                   alt={active.name}
-                  className="w-full h-80 lg:h-80 sm:rounded-tr-lg sm:rounded-tl-lg object-cover object-top bg-white dark:bg-neutral-900"
+                  className="w-full h-80 lg:h-80 sm:rounded-tr-lg sm:rounded-tl-lg object-contain object-top bg-white dark:bg-neutral-900"
                 />
               </motion.div>
 
@@ -149,7 +149,7 @@ export default function AnalysisTimeline() {
                     exit={{ opacity: 0 }}
                     href={active.url}
                     target="_blank"
-                    className="px-4 py-3 text-sm rounded-full font-bold bg-primary text-white"
+                    className="px-4 py-1 text-sm rounded-full font-bold bg-primary text-white"
                   >
                     Visit
                   </motion.a>
@@ -201,7 +201,7 @@ export default function AnalysisTimeline() {
       </AnimatePresence>
       <div className='flex flex-col max-w-6xl w-full mx-auto gap-1'>
         <Button variant='ghost' className='w-fit' onClick={() => {
-          router.push('/steve')
+          router.push('/')
         }}>
           <ArrowLeft className='mr-2' />
         </Button>
@@ -215,7 +215,7 @@ export default function AnalysisTimeline() {
             </div>
             <div className="flex justify-between items-center mb-4">
               <div className="flex items-center space-x-2">
-              <FileChartLine className='text-muted-foreground' />
+                <FileChartLine className='text-muted-foreground' />
 
                 <Tabs value={(selectedCriteria as Criteria).name} onValueChange={(value) => {
                   const criteria = criterias.find(criteria => criteria.criteriaType === value);
@@ -234,13 +234,13 @@ export default function AnalysisTimeline() {
                   </TabsList>
                 </Tabs>
 
-            </div>
+              </div>
 
-            <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2">
 
-              <Button variant='secondary' size='icon'>
-                <Download className='text-foreground size-5' />
-              </Button>
+                <Button variant='secondary' size='icon'>
+                  <Download className='text-foreground size-5' />
+                </Button>
 
 
               </div>
