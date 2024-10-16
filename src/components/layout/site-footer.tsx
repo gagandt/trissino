@@ -1,5 +1,4 @@
 // React and Next.js imports
-import Image from "next/image";
 import Link from "next/link";
 
 // Third-party library imports
@@ -11,13 +10,7 @@ import Balancer from "react-wrap-balancer";
 import { Section, Container } from "@/components/ui/craft";
 
 // Asset imports
-import { Button, buttonVariants } from "@/components/ui/button";
-import {
-  DiscordLogoIcon,
-  GitHubLogoIcon,
-  TwitterLogoIcon,
-} from "@radix-ui/react-icons";
-import { siteConfig } from "@/app/config/site";
+import { buttonVariants } from "@/components/ui/button";
 
 export default function SiteFooter() {
   return (

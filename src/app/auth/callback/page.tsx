@@ -1,14 +1,7 @@
 import React from "react";
-import { env } from "@/env";
 import LoginFailed from "./login-failed";
 import { LoginSuccess } from "./login-success";
-import { SignJWT } from "jose";
-import { auth, clerkClient } from "@clerk/nextjs/server";
-import { api } from "@/trpc/server";
-import { db } from "@/server/db";
-import { unstable_noStore } from "next/cache";
-import { userApiKeys } from "@/server/db/schema";
-import { nanoid } from "nanoid";
+import { auth } from "@clerk/nextjs/server";
 import { createApiKey } from "@/server/utils/api-key";
 export const runtime = "edge";
 

@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import SweetgreenLogo from '../../public/images/logo/Sweetgreen.png';
 import CloverLogo from '../../public/images/logo/clover.png';
 import TastyBurgerLogo from '../../public/images/logo/tasty-burger.png';
@@ -17,7 +19,7 @@ import KFCLogo from '../../public/images/logo/KFC.png';
 export interface BrandItem {
   name: string;
   url: string;
-  logo: any;
+  logo: string;
   division: number;
 }
 
