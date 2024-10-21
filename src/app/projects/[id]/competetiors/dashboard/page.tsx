@@ -2,20 +2,16 @@
 
 import { useState, useEffect } from "react"
 import {
-  Bell,
-  Filter,
-  Save,
   ThumbsUp,
   MessageSquare,
-  Share2,
-  Megaphone,
-  ChevronDown,
-  Search,
-  X,
+  Share2, ChevronDown, Globe,
+  Image,
+  Users,
+  ScanText,
+  Clock, ExternalLink
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,16 +19,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Progress } from "@/components/ui/progress"
 import { motion, AnimatePresence } from "framer-motion"
 import moment from "moment"
+import { Badge } from "@/components/ui/badge"
 
 const competitors = ["Competitor A", "Competitor B", "Competitor C"]
 const activityTypes = ["SEO", "Ad Creatives", "Social Media"]
@@ -69,15 +58,22 @@ const generateMockNewsItem = (): NewsItem => {
 const generateMockNewsFeed = (count: number): NewsItem[] =>
   Array.from({ length: count }, generateMockNewsItem)
 
-export default function InteractiveDashboard() {
+export default function ComprehensiveCompetitorDashboard() {
   const [newsFeed, setNewsFeed] = useState<NewsItem[]>([])
   const [selectedCompetitor, setSelectedCompetitor] = useState<string>("All")
   const [savedNews, setSavedNews] = useState<NewsItem[]>([])
-  const [notifications, setNotifications] = useState<number>(0)
-  const [isSavedNewsOpen, setIsSavedNewsOpen] = useState(false)
+  const [selectedItems, setSelectedItems] = useState<{
+    SEO: string[],
+    "Ad Creatives": string[],
+    "Social Media": string[]
+  }>({
+    SEO: [],
+    "Ad Creatives": [],
+    "Social Media": []
+  })
 
   useEffect(() => {
-    const newsItems = generateMockNewsFeed(20)
+    const newsItems = generateMockNewsFeed(50)
     setNewsFeed(newsItems)
   }, [])
 
@@ -85,8 +81,7 @@ export default function InteractiveDashboard() {
     const interval = setInterval(() => {
       const newItem = generateMockNewsItem()
       setNewsFeed((prev) => [newItem, ...prev])
-      setNotifications((prev) => prev + 1)
-    }, 300000) 
+    }, 300000)
 
     return () => clearInterval(interval)
   }, [])
@@ -98,59 +93,13 @@ export default function InteractiveDashboard() {
     return true
   })
 
-  const handleSaveInsight = (item: NewsItem) => {
-    if (!savedNews.some((news) => news.id === item.id)) {
-      setSavedNews((prev) => [...prev, item])
-    }
-  }
-
-  const removeSavedInsight = (id: string) => {
-    setSavedNews((prev) => prev.filter((news) => news.id !== id))
-  }
-
-  const resetNotifications = () => {
-    setNotifications(0)
-  }
-
-  const CompetitorSummary = ({ competitor }: { competitor: string }) => {
-    const competitorItems = newsFeed.filter((item) => item.competitor === competitor)
-    const totalActivities = competitorItems.length
-    const activityBreakdown = activityTypes.map((type) => ({
-      type,
-      count: competitorItems.filter((item) => item.type === type).length,
+  const handleSelectItem = (itemId: string, itemType: string) => {
+    setSelectedItems((prev) => ({
+      ...prev,
+      [itemType]: prev[itemType as keyof typeof prev].includes(itemId)
+        ? prev[itemType as keyof typeof prev].filter((id) => id !== itemId)
+        : [...prev[itemType as keyof typeof prev], itemId]
     }))
-
-    return (
-      <Card className="hover:shadow-lg transition-shadow duration-300">
-        <CardHeader>
-          <CardTitle>{competitor}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-2">
-            {activityBreakdown.map(({ type, count }) => (
-              <div key={type} className="flex items-center justify-between">
-                <span>{type}</span>
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <div className="w-1/2 group">
-                        <Progress
-                          value={(count / totalActivities) * 100}
-                          className="transition-all duration-300 group-hover:scale-105 group-hover:brightness-110"
-                        />
-                      </div>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>{`${count} ${type} activities`}</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-    )
   }
 
   const NewsItem = ({ item }: { item: NewsItem }) => (
@@ -160,60 +109,61 @@ export default function InteractiveDashboard() {
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.3 }}
     >
-      <Card className="mb-4 hover:shadow-lg transition-all duration-300 hover:scale-[1.02] bg-gradient-to-br from-white to-gray-50">
-        <CardHeader>
+      <Card className={`mt-1 mb-2 mx-3 hover:shadow-lg transition-all duration-300 hover:scale-[1.02] bg-gradient-to-br from-white to-gray-50 ${selectedItems[item.type as keyof typeof selectedItems].includes(item.id) ? 'border-2 border-blue-500' : ''}`}>
+        <CardHeader className="px-3 py-2">
           <div className="flex justify-between items-center">
             <CardTitle className="flex items-center">
-              {item.competitor === "Competitor A" && <Search className="w-4 h-4 mr-2 text-blue-500" />}
-              {item.competitor === "Competitor B" && <Filter className="w-4 h-4 mr-2 text-green-500" />}
-              {item.competitor === "Competitor C" && <Megaphone className="w-4 h-4 mr-2 text-purple-500" />}
               {item.competitor}
             </CardTitle>
-            <Badge
-              className={`
-                ${item.type === "SEO" && "bg-yellow-100 text-yellow-800"}
-                ${item.type === "Ad Creatives" && "bg-blue-100 text-blue-800"}
-                ${item.type === "Social Media" && "bg-green-100 text-green-800"}
-              `}
-            >
-              {item.type}
-            </Badge>
+            <div className="flex items-center space-x-1">
+              <small className="flex items-center gap-1 text-muted-foreground">
+                <Clock className="w-3 h-3" />
+                {moment(item.date).fromNow(true)}
+              </small>
+            </div>
           </div>
         </CardHeader>
-        <CardContent>
-  <p>{item.content}</p>
-  <div className="flex justify-between items-center mt-4">
-    <small className="text-gray-500 text-sm ">
-      {moment(item.date).format('DD MMM YYYY, h:mm A')}
-    </small>
-    
-    {item.type === "Social Media" && (
-      <div className="flex space-x-4"> 
-        <div className="flex items-center space-x-1">
-          <ThumbsUp className="w-4 h-4 text-gray-600" />
-          <span>{item.likes}</span>
-        </div>
-        <div className="flex items-center space-x-1">
-          <MessageSquare className="w-4 h-4 text-gray-600" />
-          <span>{item.comments}</span>
-        </div>
-        <div className="flex items-center space-x-1">
-          <Share2 className="w-4 h-4 text-gray-600" />
-          <span>{item.shares}</span>
-        </div>
-      </div>
-    )}
-    
-    <Button
-      size="sm"
-      onClick={() => handleSaveInsight(item)}
-      className="hover:bg-yellow-50 hover:text-yellow-600 transition-colors duration-300 ml-4" 
-    >
-      <Save className="w-4 h-4 mr-2" /> Save
-    </Button>
-  </div>
-</CardContent>
 
+        <CardContent className="px-3 pb-0">
+          <p className="text-sm">{item.content}</p>
+          <div className="flex justify-between items-center">
+            {item.type === "Social Media" && (
+              <div className="flex space-x-4">
+                <div className="flex items-center space-x-1">
+                  <ThumbsUp className="w-4 h-4 text-gray-600" />
+                  <span className="text-sm">{item.likes}</span>
+                </div>
+                <div className="flex items-center space-x-1">
+                  <MessageSquare className="w-4 h-4 text-gray-600" />
+                  <span className="text-sm">{item.comments}</span>
+                </div>
+                <div className="flex items-center space-x-1">
+                  <Share2 className="w-4 h-4 text-gray-600" />
+                  <span className="text-sm">{item.shares}</span>
+                </div>
+              </div>
+            )}
+
+            <div className="flex w-full justify-end items-center space-x-1">
+              <Button
+                size="icon"
+                variant="ghost"
+                onClick={() => handleSelectItem(item.id, item.type)}
+                className={`hover:bg-yellow-50 hover:text-yellow-600 transition-colors duration-300 ${selectedItems[item.type as keyof typeof selectedItems].includes(item.id) ? 'text-primary' : ''}`}
+              >
+                <ScanText className="w-4 h-4" />
+              </Button>
+
+              <Button
+                size="icon"
+                variant="ghost"
+                className="hover:bg-yellow-50 hover:text-yellow-600 transition-colors duration-300"
+              >
+                <ExternalLink className="w-4 h-4" />
+              </Button>
+            </div>
+          </div>
+        </CardContent>
       </Card>
     </motion.div>
   )
@@ -242,123 +192,47 @@ export default function InteractiveDashboard() {
   )
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-8 text-center">Competitor Dashboard</h1>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-        {competitors.map((competitor) => (
-          <CompetitorSummary key={competitor} competitor={competitor} />
-        ))}
+    <div className="container mx-auto p-4 space-y-8">
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-2xl font-semibold">Competitor Activities</h2>
+        <FilterDropdown
+          options={["All", ...competitors]}
+          value={selectedCompetitor}
+          onChange={setSelectedCompetitor}
+          label="Filter by Competitor"
+        />
       </div>
 
-      <div className="flex flex-wrap gap-2 mb-8 items-center justify-start space-x-2">
-  <TooltipProvider>
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <Button
-          variant="outline"
-          onClick={resetNotifications}
-          className="flex items-center justify-center px-4 py-2"
-        >
-          <Bell className="w-4 h-4 mr-2" />
-          <span>Alerts</span>
-          {notifications > 0 && (
-            <Badge
-              variant="destructive"
-              className="ml-2 w-5 h-5 text-xs rounded-full bg-red-500 text-white flex items-center justify-center"
-            >
-              {notifications}
-            </Badge>
-          )}
-        </Button>
-      </TooltipTrigger>
-      <TooltipContent>
-        <p>You have {notifications} new notifications</p>
-      </TooltipContent>
-    </Tooltip>
-  </TooltipProvider>
-
-  <Button
-    variant="outline"
-    onClick={() => setIsSavedNewsOpen(true)}
-    className="flex items-center justify-center px-4 py-2"
-  >
-    <span>Saved News</span>
-  </Button>
-
-  <FilterDropdown
-    options={["All", ...competitors]}
-    value={selectedCompetitor}
-    onChange={setSelectedCompetitor}
-    label="Competitor"
-  />
-</div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {activityTypes.map((type) => (
-          <div key={type}>
-            <h2 className="text-xl font-bold mb-4">{type}</h2>
-            <ScrollArea className="h-[600px] pr-4">
-              <AnimatePresence>
-                {filteredNewsFeed
-                  .filter((item) => item.type === type)
-                  .map((item) => (
-                    <NewsItem key={item.id} item={item} />
-                  ))}
-              </AnimatePresence>
-            </ScrollArea>
-          </div>
+          <Card key={type} className="col-span-1">
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle className="flex items-center">
+                {type === "SEO" && <Globe className="w-5 h-5 mr-2 text-yellow-500" />}
+                {type === "Ad Creatives" && <Image className="w-5 h-5 mr-2 text-blue-500" />}
+                {type === "Social Media" && <Users className="w-5 h-5 mr-2 text-green-500" />}
+                {type}
+              </CardTitle>
+              {selectedItems[type as keyof typeof selectedItems].length > 0 && (
+                <Button variant="outline" size="sm">
+                  Analyze <Badge variant="default" className="ml-2">{selectedItems[type as keyof typeof selectedItems].length}</Badge>
+                </Button>
+              )}
+            </CardHeader>
+            <CardContent className="p-1 pb-4">
+              <ScrollArea className="h-[400px]">
+                <AnimatePresence>
+                  {filteredNewsFeed
+                    .filter((item) => item.type === type)
+                    .map((item) => (
+                      <NewsItem key={item.id} item={item} />
+                    ))}
+                </AnimatePresence>
+              </ScrollArea>
+            </CardContent>
+          </Card>
         ))}
       </div>
-
-      <Dialog open={isSavedNewsOpen} onOpenChange={setIsSavedNewsOpen}>
-        <DialogContent className="sm:max-w-[800px]">
-          <DialogHeader>
-            <DialogTitle>Saved News</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4">
-            {savedNews.length > 0 ? (
-              savedNews.map((item) => (
-                <Card key={item.id} className="hover:shadow-lg transition-all duration-300">
-                  <CardHeader>
-                    <div className="flex justify-between items-center">
-                      <CardTitle className="flex items-center">
-                        {item.competitor === "Competitor A" && <Search className="w-4 h-4 mr-2 text-blue-500" />}
-                        {item.competitor === "Competitor B" && <Filter className="w-4 h-4 mr-2 text-green-500" />}
-                        {item.competitor === "Competitor C" && <Megaphone className="w-4 h-4 mr-2 text-purple-500" />}
-                        {item.competitor}
-                      </CardTitle>
-                      <Badge
-                        className={`
-                          ${item.type === "SEO" && "bg-yellow-100 text-yellow-800"}
-                          ${item.type === "Ad Creatives" && "bg-blue-100 text-blue-800"}
-                          ${item.type === "Social Media" && "bg-green-100 text-green-800"}
-                        `}
-                      >
-                        {item.type}
-                      </Badge>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => removeSavedInsight(item.id)}
-                        className="ml-2"
-                      >
-                        <X className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p>{item.content}</p>
-                    <small>{new Date(item.date).toLocaleString()}</small>
-                  </CardContent>
-                </Card>
-              ))
-            ) : (
-              <p>No saved news items.</p>
-            )}
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
   )
 }
