@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import {
   ThumbsUp,
   MessageSquare,
@@ -58,6 +58,18 @@ const generateMockNewsItem = (): NewsItem => {
 const generateMockNewsFeed = (count: number): NewsItem[] =>
   Array.from({ length: count }, generateMockNewsItem)
 
+const CompetitorBadge = ({ name }: { name: string }) => {
+  const initials = name.split(' ').map(word => word[0]).join('').toUpperCase();
+
+  return (
+    <div
+      className="w-8 h-8 rounded-full flex items-center justify-center text-accent-foreground font-bold text-sm mr-2 bg-accent"
+    >
+      {initials}
+    </div>
+  );
+};
+
 export default function ComprehensiveCompetitorDashboard() {
   const [newsFeed, setNewsFeed] = useState<NewsItem[]>([])
   const [selectedCompetitor, setSelectedCompetitor] = useState<string>("All")
@@ -113,6 +125,7 @@ export default function ComprehensiveCompetitorDashboard() {
         <CardHeader className="px-3 py-2">
           <div className="flex justify-between items-center">
             <CardTitle className="flex items-center">
+              <CompetitorBadge name={item.competitor} />
               {item.competitor}
             </CardTitle>
             <div className="flex items-center space-x-1">
@@ -177,14 +190,24 @@ export default function ComprehensiveCompetitorDashboard() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" className="w-[200px] justify-between">
-          {value === "All" ? label : value}
+          {value === "All" ? label : (
+            <div className="flex items-center">
+              <CompetitorBadge name={value} />
+              {value}
+            </div>
+          )}
           <ChevronDown className="ml-2 h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-[200px]">
         {options.map((option) => (
           <DropdownMenuItem key={option} onSelect={() => onChange(option)}>
-            {option}
+            {option === "All" ? option : (
+              <div className="flex items-center">
+                <CompetitorBadge name={option} />
+                {option}
+              </div>
+            )}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>
@@ -208,9 +231,9 @@ export default function ComprehensiveCompetitorDashboard() {
           <Card key={type} className="col-span-1">
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="flex items-center">
-                {type === "SEO" && <Globe className="w-5 h-5 mr-2 text-yellow-500" />}
-                {type === "Ad Creatives" && <Image className="w-5 h-5 mr-2 text-blue-500" />}
-                {type === "Social Media" && <Users className="w-5 h-5 mr-2 text-green-500" />}
+                {type === "SEO" && <Globe className="w-5 h-5 mr-2 text-muted-foreground" />}
+                {type === "Ad Creatives" && <Image className="w-5 h-5 mr-2 text-muted-foreground" />}
+                {type === "Social Media" && <Users className="w-5 h-5 mr-2 text-muted-foreground" />}
                 {type}
               </CardTitle>
               {selectedItems[type as keyof typeof selectedItems].length > 0 && (

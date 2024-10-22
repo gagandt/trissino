@@ -37,11 +37,11 @@ export default function RootLayout({
       }}
     >
       <html lang="en" suppressHydrationWarning>
-      <head>
-        <title>Steve - AI-Powered Business Analysis</title>
-        <meta name="description" content="Explore Steve's AI-driven business analysis tools for data-driven insights and strategic decision-making." />
-        <link rel="icon" href="logo.png" type="image/png" />
-      </head>
+        <head>
+          <title>Steve - AI-Powered Business Analysis</title>
+          <meta name="description" content="Explore Steve's AI-driven business analysis tools for data-driven insights and strategic decision-making." />
+          <link rel="icon" href="logo.png" type="image/png" />
+        </head>
         <body
           className={cn(
             "min-h-screen bg-background font-sans antialiased",
@@ -61,7 +61,10 @@ export default function RootLayout({
               <>
                 <SiteHeader />
 
-                {children}
+
+                <div className="flex mx-auto md:max-w-2xl xl:max-w-7xl items-center">
+                  {children}
+                </div>
 
                 <SiteFooter />
               </>
