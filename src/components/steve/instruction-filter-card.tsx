@@ -20,41 +20,40 @@ import CriteriaPanel from "./criteria-panel";
 import usCities from "@/contants/us_states_wise_cities.json";
 import { cn } from "@/lib/utils";
 import { useSteveAnalysisQueryStore } from "@/stores/steve-analysis-query-store";
-import { toast } from "sonner";
 
 const keywordsList = [
   {
     label: "Vegan",
-    value: "keyword1",
+    value: "Vegan",
   },
   {
     label: "Ethically Sourced",
-    value: "keyword2",
+    value: "Ethically Sourced",
   },
   {
     label: "Gluten-Free",
-    value: "keyword3",
+    value: "Gluten-Free",
   },
   {
     label: "Organic",
-    value: "keyword4",
+    value: "Organic",
   },
   {
     label: "Non-GMO",
-    value: "keyword5",
+    value: "Non-GMO",
   },
   {
     label: "Healthy",
-    value: "keyword6",
+    value: "Healthy",
   }
 ];
 
-const InstructionFilterCard = (props: { setIsOpen: (isOpen: boolean) => void }) => {
-  const { setIsOpen } = props;
+const InstructionFilterCard = (props: { setIsOpen: (isOpen: boolean) => void, handleSubmitClick: () => void }) => {
+  const { setIsOpen, handleSubmitClick } = props;
 
   const steveAnalysisQueryStore = useSteveAnalysisQueryStore(state => state);
   const { term, city, keywords, criterias } = steveAnalysisQueryStore;
-  
+
   const US_CITIES = useMemo(() => {
     return usCities?.reduce((acc: Option[], city: string) => {
       acc?.push({
@@ -65,26 +64,6 @@ const InstructionFilterCard = (props: { setIsOpen: (isOpen: boolean) => void }) 
     }, []);
   }, []);
 
-  const handleSubmitClick = () => {
-    if (!term) {
-      toast("Please Enter Search Term", {
-        className: 'mt-4 bg-red-500',
-      });
-      return;
-    }
-    if (!city) {
-      toast("Please Select a City", {
-        className: 'mt-4 bg-red-500',
-      });
-      return;
-    }
-    setIsOpen(true);
-
-    const urlsPanel = document.getElementById('urls-panel');
-    if (urlsPanel) {
-      urlsPanel.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
 
   return (
     <Card className="w-full">

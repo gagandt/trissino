@@ -11,6 +11,9 @@ const config = {
       {
         hostname: 'ygo-assets-entities-us.yougov.net',
       },
+      {
+        hostname: "**",
+      },
     ],
   },
 };

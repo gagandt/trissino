@@ -11,30 +11,27 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { type BrandItem, burgerLinks, skincareLinks } from '@/contants/brand-links'
 import type { PromptTypes } from '@/app/steve/page'
+import { useMutation } from 'node_modules/@tanstack/react-query/build/modern/useMutation'
+import { useSteveAnalysisQueryStore } from '@/stores/steve-analysis-query-store'
+import { useSteveAnalysisResult } from '@/stores/steve-analysis-result-store'
+import { useSteveBrands } from '@/stores/steve-query-brands'
 
 interface PropsTypes {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   promptType: PromptTypes;
-  setAnalysisLoading: (isLoading: boolean) => void;
+  isLoading: boolean;
+  setIsLoading: (isLoading: boolean) => void;
 }
 
 
 export default function SteveUrls(props: PropsTypes) {
-  const router = useRouter();
+  const { isOpen, setIsOpen, isLoading, setIsLoading } = props;
+  
+  const brands = useSteveBrands((state) => state.brands);
+  const setBrands = useSteveBrands((state) => state.setBrands);
 
-  const { isOpen, setIsOpen, promptType, setAnalysisLoading } = props;
-  const [isLoading, setIsLoading] = useState(false)
-  const [urls, setUrls] = useState<BrandItem[]>([]);
   const [editingIndex, setEditingIndex] = useState(-1)
-
-  useEffect(() => {
-    if (promptType === 'PROMPT') {
-      setUrls(skincareLinks)
-    } else {
-      setUrls(burgerLinks)
-    }
-  }, [promptType])
 
   useEffect(() => {
     if (isOpen) {
@@ -50,11 +47,11 @@ export default function SteveUrls(props: PropsTypes) {
   }, [isOpen])
 
   const addUrl = () => {
-    setUrls([...urls, { name: `New Example ${urls.length + 1}`, url: 'https://acme.org', logo: '', division: 1 }])
+    setBrands([...brands, { brand: `New Example ${brands.length + 1}`, link: 'https://acme.org', brandLogo: "" }])
   }
 
   const removeUrl = (index: number) => {
-    setUrls(urls.filter((_, i) => i !== index))
+    setBrands(brands.filter((_, i) => i !== index))
   }
 
   const startEditing = (index: number) => {
@@ -62,9 +59,9 @@ export default function SteveUrls(props: PropsTypes) {
   }
 
   const handleEdit = (index: number, newValue: string) => {
-    const newUrls = [...urls]
-    newUrls[index]!.url = newValue; // Removed unnecessary type assertion
-    setUrls(newUrls)
+    const newUrls = [...brands]
+    newUrls[index]!.link = newValue; // Removed unnecessary type assertion
+    setBrands(newUrls)
   }
 
   const finishEditing = () => {
@@ -73,6 +70,10 @@ export default function SteveUrls(props: PropsTypes) {
 
   const handleBrandLink = (brandLink: string) => {
     window?.open(brandLink, 'blank');
+  }
+
+  const handleSubmitAnalysis = () => {
+    setIsOpen(false);
   }
 
   return (
@@ -106,7 +107,7 @@ export default function SteveUrls(props: PropsTypes) {
                     </Button>
 
                     <AnimatePresence>
-                      {urls.map((item, index) => (
+                      {brands.map((item, index) => (
                         <motion.div
                           key={index}
                           initial={{ opacity: 0, y: 20 }}
@@ -116,10 +117,10 @@ export default function SteveUrls(props: PropsTypes) {
                           className="bg-muted rounded-md p-3 mb-3 flex items-center"
                         >
                           <div className="flex-shrink-0 mr-4">
-                            {item?.logo ? (
+                            {item?.link ? (
                               <Image
-                                src={item?.logo}
-                                alt={`${item.name} icon`}
+                                src={`https://img.logo.dev/${item.link}?token=pk_TDZciKdDTaOLy8XcVwk50Q`}
+                                alt={`${item.brand} icon`}
                                 width={40}
                                 height={40}
                                 className="rounded-md"
@@ -131,12 +132,12 @@ export default function SteveUrls(props: PropsTypes) {
                           </div>
                           <div className="flex-grow">
                             <div className="font-medium mb-1">
-                              {item.name}
+                              {item.brand}
                             </div>
                             {editingIndex === index ? (
                               <Input
                                 type="text"
-                                value={item.url}
+                                value={item.link}
                                 onChange={(e) => handleEdit(index, e.target.value)}
                                 onBlur={finishEditing}
                                 autoFocus
@@ -144,15 +145,15 @@ export default function SteveUrls(props: PropsTypes) {
                               />
                             ) : (
                               <div onClick={() => {
-                                handleBrandLink(item?.url);
+                                handleBrandLink(item?.link);
                               }} className="flex items-center gap-2 cursor-pointer w-fit hover:border-b hover:border-blue-500">
-                                <p className='text-sm text-muted-foreground truncate'>{item.url}</p>
+                                <p className='text-sm text-muted-foreground truncate'>{item.link}</p>
                               </div>
                             )}
                           </div>
                           <div className="flex-shrink-0 ml-2">
 
-                            <Link href={item.url} target='_blank'>
+                            <Link href={item.link} target='_blank'>
                               <Button
                                 size="icon"
                                 variant="ghost"
@@ -187,12 +188,7 @@ export default function SteveUrls(props: PropsTypes) {
 
               <CardFooter>
                 <Button onClick={() => {
-                  setIsOpen(false);
-                  setAnalysisLoading(true);
-                  setTimeout(() => {
-                    setAnalysisLoading(false);
-                    router.push('/steve/analysis');
-                  }, 3500);
+                  handleSubmitAnalysis();
                 }} className='w-full'>
                   Start Analysis
                 </Button>

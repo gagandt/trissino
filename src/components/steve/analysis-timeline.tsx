@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useId, useRef } from 'react'
+import React, { useEffect, useId, useMemo, useRef } from 'react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { burgerLinks } from '@/contants/brand-links'
@@ -13,6 +13,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useOutsideClick } from '@/hooks/use-outside-click'
 import { useSteveAnalysisQueryStore } from '@/stores/steve-analysis-query-store'
 import { FileChartLine, Download } from "lucide-react";
+import { AnalysisBrandType, useSteveAnalysisResult } from '@/stores/steve-analysis-result-store'
 
 interface Criteria {
   name: string
@@ -26,8 +27,12 @@ export default function AnalysisTimeline() {
   const id = useId();
   const ref = useRef<HTMLDivElement>(null);
 
+  const analysisResult = useSteveAnalysisResult(state => state.analysisResult);
   const steveAnalysisQueryStore = useSteveAnalysisQueryStore(state => state);
   const { term, city, keywords, criterias } = steveAnalysisQueryStore;
+
+  console.log("=======", criterias);
+  
 
   const [selectedCriteria, setSelectedCriteria] = React.useState<Criteria>({
     name: '',
@@ -52,18 +57,31 @@ export default function AnalysisTimeline() {
     })
   }, [criterias])
 
-  function groupBrandsByDivision(brands: BrandItem[]) {
-    return brands.reduce((acc, brand) => {
-      const division = brand.division;
-      if (!acc[division]) {
-        acc[division] = [];
+  function groupBrandsByDivision(brands: AnalysisBrandType[]) {
+    const divisions: Record<string, any> = {};
+    for(let i = 1; i <= selectedCriteria.noOfDivisions; i++) {
+      divisions[i] = [];
+    }
+    brands.forEach((brand) => {
+      const currentCriteria = brand.criteria.find((ele) => {
+        return ele.criteriaType === selectedCriteria.name;
+      });
+      if (currentCriteria) {
+        divisions[currentCriteria.division].push({
+          ...brand,
+          currentCriteria
+        });
       }
-      acc[division].push(brand);
-      return acc;
-    }, {} as Record<number, BrandItem[]>);
+    });
+    return divisions;
   }
 
-  const divisions = Object.entries(groupBrandsByDivision(burgerLinks));
+  const divisions = useMemo(() => {
+    return Object.entries(groupBrandsByDivision(analysisResult));
+  }, [analysisResult, selectedCriteria]);
+
+  console.log("divisionsss", divisions);
+  
 
   useOutsideClick(ref, () => setActive(null));
 
@@ -209,7 +227,7 @@ export default function AnalysisTimeline() {
             </div>
             <div className="flex justify-between items-center mb-4">
               <div className="flex items-center space-x-2">
-              <FileChartLine className='text-muted-foreground' />
+                <FileChartLine className='text-muted-foreground' />
 
                 <Tabs value={selectedCriteria.name} onValueChange={(value) => {
                   const criteria = criterias.find(criteria => criteria.criteriaType === value);
@@ -228,13 +246,13 @@ export default function AnalysisTimeline() {
                   </TabsList>
                 </Tabs>
 
-            </div>
+              </div>
 
-            <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2">
 
-              <Button variant='secondary' size='icon'>
-                <Download className='text-foreground size-5' />
-              </Button>
+                <Button variant='secondary' size='icon'>
+                  <Download className='text-foreground size-5' />
+                </Button>
 
 
               </div>
@@ -251,10 +269,10 @@ export default function AnalysisTimeline() {
                 {divisions.map(([division, brands], index: number) => (
                   <div key={division} className="mb-4">
                     <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pb-4 ${index !== divisions.length - 1 ? 'border-b' : ''}`}>
-                      {brands.map((brand: BrandItem, idx: number) => (
+                      {brands.map((brand: any, idx: number) => (
                         <motion.div
-                          layoutId={`card-${brand.name}-${id}`}
-                          key={brand.name}
+                          layoutId={`card-${brand.currentCriteria.criteriaType}-${id}`}
+                          key={brand.brand}
                           onClick={() => setActive(brand)}
                           className="flex flex-col  hover:bg-neutral-50 dark:hover:bg-neutral-800 rounded-xl cursor-pointer"
                         >
@@ -264,20 +282,20 @@ export default function AnalysisTimeline() {
                           >
                             <CardContent className="p-4 w-full">
                               <div className="flex items-center space-x-2">
-                                <motion.div layoutId={`image-${brand.name}-${id}`}>
+                                <motion.div layoutId={`image-${brand.brand}-${id}`}>
                                   <Image
                                     src={brand.logo}
-                                    alt={brand.name}
+                                    alt={brand.brand}
                                     width={48}
                                     height={48}
                                     className='object-contain rounded-lg'
                                   />
                                 </motion.div>
                                 <motion.h3
-                                  layoutId={`title-${brand.name}-${id}`}
+                                  layoutId={`title-${brand.brand}-${id}`}
                                   className="font-semibold text-sm"
                                 >
-                                  {brand.name}
+                                  {brand.brand}
                                 </motion.h3>
                               </div>
                             </CardContent>

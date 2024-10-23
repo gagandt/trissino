@@ -40,7 +40,7 @@ export const burgerLinks: BrandItem[] = [
     name: "B.GOOD",
     url: "https://www.bgood.com",
     logo: BGoodLogo,
-    division: 1,
+    division: 10,
   },
   {
     name: "FIVE GUYS",
@@ -70,7 +70,7 @@ export const burgerLinks: BrandItem[] = [
     name: "Mainely Burgers",
     url: "https://www.mainelyburgers.com",
     logo: MainelyBurgersLogo,
-    division: 1,
+    division: 6,
   },
   {
     name: "Jersey Mike's Subs",
@@ -82,13 +82,13 @@ export const burgerLinks: BrandItem[] = [
     name: "Doherty's East Ave Irish Pub",
     url: "https://www.dohertysirishpubnc.com/",
     logo: DohertysLogo,
-    division: 1,
+    division: 7,
   },
   {
     name: "Gregg's Restaurant",
     url: "https://www.greggsusa.com",
     logo: GreggsLogo,
-    division: 2,
+    division: 8,
   },
   {
     name: "Halfway Café",
@@ -106,13 +106,13 @@ export const burgerLinks: BrandItem[] = [
     name: "McDonald's",
     url: "https://www.mcdonalds.com",
     logo: McDonaldsLogo,
-    division: 2,
+    division: 5,
   },
   {
     name: "KFC",
     url: "https://www.kfc.com/",
     logo: KFCLogo,
-    division: 3
+    division: 9
   }
 ];
 
