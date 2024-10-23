@@ -2,6 +2,7 @@ import { BRAND_ANALYSIS_PROMPT } from '@/contants/prompts';
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { generateText, tool } from 'ai';
 import axios from 'axios';
+import { NextResponse } from 'next/server';
 import { z } from "zod";
 
 
@@ -9,7 +10,7 @@ const google = createGoogleGenerativeAI({
     apiKey: process.env.GOOGLE_AI_API_KEY,
 });
 
-const model = google('gemini-1.5-flash')
+const model = google('gemini-1.5-flash', { structuredOutputs: true })
 
 
 async function getUrlScrapedData(link: string) {
@@ -88,11 +89,11 @@ const research_query = async (query: string) => {
 
 const get_brands_scraped_data = (brands: any) => {
     console.log(brands);
-    return [];
+    return ["scraped data"];
 }
 
 const brandStructure = z.object({
-    brandName: z.string().describe("Brand name"),
+    brandName: z.string().describe("Name of the given brand"),
     searchQuery: z.string().describe("Search query for the brand")
 });
 
@@ -119,31 +120,39 @@ const outputStructure = z.array(ScrapedItem).describe("List")
 export async function POST(req: Request) {
     const { term, city, keywords, criteria, brands } = await req.json();
 
+    console.log("brandsss", brands);
+
+
     const { toolCalls } = await generateText({
         model,
         tools: {
-            get_brands_scraped_data: tool({
-                description: 'A tool that returns the web scraped data of a brand using search query',
-                parameters: z.object({ brands: z.array(brandStructure) }),
-                execute: async (params) => get_brands_scraped_data(params),
-            }),
-            // answer: tool({
-            //     description: 'A tool for providing the final answer.',
-            //     parameters: z.object({
-            //         steps: z.array(
-            //             z.object({
-            //                 reasoning: z.string(),
-            //             }),
-            //         ),
-            //         answer: outputStructure,
-            //     }),
+            // get_brands_scraped_data: tool({
+            //     description: 'a tool that return an array of string',
+            //     parameters: z.object({ brands: z.array(brandStructure) }),
+            //     execute: async (params) => get_brands_scraped_data(params),
             // }),
+            answer: tool({
+                description: 'A tool for providing the final answer.',
+                parameters: z.object({ brands: z.array(brandStructure) }),
+            }),
         },
         toolChoice: 'required',
         maxSteps: 5,
         system: BRAND_ANALYSIS_PROMPT,
-        prompt: `Here is the term: ${term}, Brands list: ${brands}, Criteria: ${criteria}`
+// Dont use agent to genr tae the query,
+
+        prompt: `Here is the data:
+            Term: ${term}
+            Keywords: ${keywords.join(', ')}
+            Criteria: ${criteria.map((c: any) => `${c.type}: [${c.ends.join(', ')}], Divisions: ${c.noOfDivisions}`).join('; ')}
+            Brands:
+            ${brands.map((brand: any) => `
+                Brand Name: ${brand.name}
+                Website: ${brand.url}
+            `).join('\n')}`
     });
 
     console.log(`FINAL TOOL CALLS: ${JSON.stringify(toolCalls, null, 2)}`);
+    return NextResponse.json({ message: "Successfully processed brand AI request" }, { status: 200 });
+
 }

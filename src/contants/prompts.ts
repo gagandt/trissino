@@ -148,25 +148,27 @@ Also, before returning the items, check if the {result} have that brand/item alr
 
 
 export const BRAND_ANALYSIS_PROMPT = `
+You are an intelligent research assistant. Your task is to create well-structured search queries for a \
+list of brands using the provided brands list, term, keywords, and evaluation criteria. The goal of the query is to gather relevant online information about the brand, particularly in relation to the specified criteria.
 
-You are given term, criterias and a list of brands.
-Each criteria have: 
-{
-type: price, quality, etc,
-ends: [] // for example, [low, high], [mass, premium]
-noOfDivisions: number // total number of division for the brand to lie on
-}
+Follow these instructions for each query:
 
-Each brand have:
-{
-brand: string, // brand name
-url: string // brand website link url
-}
-
-Generate a search query for each brand using the brand name, given term and the criteria type, \
-which will allow us to get most web scraped data for the brand to \
-determine which brands lies where in the given end of the criteria and at what division it lies between the noOfDivions.
-
-Once all the scraped data is fetched, go throught the scraped data and determine where the brand lies in the given ends \
-of the criteria and at what of number of division it lies, reasoning for this determination and scraped data for that brand.
+Brand Name: Always include the brand name as a core part of the query.
+Term: Incorporate the term to focus the search on a particular subject or industry (e.g., 'best vegan brands' or 'luxury travel').
+Keywords: Use the given keywords to refine the search further and capture specific details related to the brand (e.g., 'eco-friendly', \
+'affordable', 'high quality').
+Criteria:
+For each Type of criteria (e.g., price, quality, etc.), ensure the query mentions that type.
+Utilize the Ends to define the range (e.g., low to high).
+Use the Number of Divisions to segment the range into categories, mentioning the division levels in the query (e.g., low, moderate, high).
+Make sure the query is clear, concise, and structured in a way that extracts useful information from online resources. The query should allow \
+gathering information that aligns with the evaluation criteria while being broad enough to yield comprehensive results."
 `;
+
+
+// Process scraped data:
+// Analyze the scraped data to determine where each brand falls within the specified criterion's ends and divisions for each criterion in the list.
+// Provide a reasoned explanation for this placement, citing relevant data points from the scraped information.
+
+// Use a systematic approach to analyze scraped data, considering factors like pricing, reviews, features, and market positioning.
+// Provide clear and concise explanations for brand placements, supported by evidence from the scraped data.
