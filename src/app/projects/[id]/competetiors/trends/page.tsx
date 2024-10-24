@@ -1,9 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Select,
   SelectContent,
@@ -13,273 +12,198 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { DatePickerWithRange } from "@/components/ui/date-picker";
 import {
-  LineChart,
   Line,
-  BarChart,
-  Bar,
+  LineChart,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   Legend,
   ResponsiveContainer,
+  ReferenceLine,
 } from "recharts";
-import { ChevronDown, ChevronUp } from "lucide-react";
-import ReportGenerationModal from "@/components/competetiors/report-generate";
+import { dummyData, Trendcompetitor } from "@/ data/mock-data"; 
 
-type Metric = "SEO Keywords" | "Ad Creatives" | "Social Media Posts" | "Website Updates";
+const calculateBenchmarks = (data: any[], selectedCompetitors: string[]) => {
+  const averages = data.map((entry) => {
+    const values = selectedCompetitors.map((competitor) => entry[competitor]);
+    const sum = values.reduce((a, b) => a + b, 0);
+    return {
+      ...entry,
+      average: sum / values.length,
+    };
+  });
 
-const generateMockData = (competitors: string[], days: number) => {
-  return competitors.map((competitor) => ({
-    name: competitor,
-    data: Array.from({ length: days }, (_, i) => ({
-      date: new Date(Date.now() - (days - i) * 24 * 60 * 60 * 1000)
-        .toISOString()
-        .split("T")[0],
-      seoRank: Math.floor(Math.random() * 100) + 1,
-      adSpend: Math.floor(Math.random() * 10000),
-      socialEngagement: Math.floor(Math.random() * 1000),
-      websiteUpdates: Math.floor(Math.random() * 10),
-    })),
-  }));
+  const allValues = data.flatMap((entry) =>
+    selectedCompetitors.map((competitor) => entry[competitor])
+  );
+  const topPerformer = Math.max(...allValues);
+  const lowestPerformer = Math.min(...allValues);
+
+  return { averages, topPerformer, lowestPerformer };
 };
 
-const competitors = ["Competitor A", "Competitor B", "Competitor C", "Competitor D"];
-const metrics: Metric[] = ["SEO Keywords", "Ad Creatives", "Social Media Posts", "Website Updates"];
-
 export default function EnhancedHistoricalDataTrends() {
-  const [selectedMetrics, setSelectedMetrics] = useState<Record<Metric, boolean>>({
-    "SEO Keywords": true,
-    "Ad Creatives": true,
-    "Social Media Posts": true,
-    "Website Updates": false,
-  });
-  const [selectedCompetitors, setSelectedCompetitors] = useState<string[]>([competitors[0] || ""]);
-  const [dateRange, setDateRange] = useState({
-    from: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
-    to: new Date(),
-  });
-  const [activeTab, setActiveTab] = useState<Metric>("SEO Keywords");
-  const [isAdvancedOpen, setIsAdvancedOpen] = useState(false);
-  const [trackingFrequency, setTrackingFrequency] = useState("weekly");
-  const [isModalOpen, setIsModalOpen] = useState(false); 
+  const [selectedMetric, setSelectedMetric] = useState("SEO Keywords");
+  const [showBenchmarks, setShowBenchmarks] = useState(false);
+  const [selectedCompetitors, setSelectedCompetitors] = useState(["DJI", "Autel Robotics", "Matternet"]);
 
-  const [data, setData] = useState<any[]>([]);
-
-  useEffect(() => {
-    const generatedData = generateMockData(selectedCompetitors, 30);
-    setData(generatedData);
-  }, [selectedCompetitors]);
-
-  const handleMetricToggle = (metric: Metric) => {
-    setSelectedMetrics((prev) => ({
-      ...prev,
-      [metric]: !prev[metric],
-    }));
+  const handleCompetitorSelection = (competitor: string) => {
+    setSelectedCompetitors((prev) =>
+      prev.includes(competitor)
+        ? prev.filter((c) => c !== competitor)
+        : [...prev, competitor]
+    );
   };
 
-  const renderChart = () => {
-    if (!data || data.length === 0 || !data[0]?.data?.length) {
-      return <div>No data available</div>; 
-    }
+  const data = useMemo(() => dummyData[selectedMetric as keyof typeof dummyData], [selectedMetric]);
+  const { averages, topPerformer, lowestPerformer } = useMemo(
+    () => calculateBenchmarks(data, selectedCompetitors),
+    [data, selectedCompetitors]
+  );
 
-    switch (activeTab) {
-      case "SEO Keywords":
-      case "Social Media Posts":
-        return (
-          <ResponsiveContainer width="100%" height={400}>
-            <LineChart data={data[0].data}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
-              <XAxis 
-                dataKey="date" 
-                tickFormatter={(date) => new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} 
-                tick={{ fontSize: 12 }}  
-                interval="preserveStartEnd"  
-                angle={-45}  
-                textAnchor="end"  
-              />
-              <YAxis />
-              <Tooltip 
-                contentStyle={{ backgroundColor: '#fff', borderRadius: '5px', border: '1px solid #ccc' }} 
-                itemStyle={{ color: '#666' }} 
-              />
-              <Legend />
-              {data.map((competitor, index) => (
-                <Line
-                  key={competitor.name}
-                  type="monotone"
-                  dataKey={activeTab === "SEO Keywords" ? "seoRank" : "socialEngagement"}
-                  data={competitor.data}
-                  name={competitor.name}
-                  stroke={`hsl(${index * 60}, 70%, 50%)`}
-                  isAnimationActive={true}  
-                  animationDuration={800}
-                  dot={{ r: 5 }}  
-                />
-              ))}
-            </LineChart>
-          </ResponsiveContainer>
-        );
-      case "Ad Creatives":
-      case "Website Updates":
-        return (
-          <ResponsiveContainer width="100%" height={400}>
-            <BarChart data={data[0].data}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis 
-                dataKey="date" 
-                tickFormatter={(date) => new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} 
-                tick={{ fontSize: 12 }}  
-                interval="preserveStartEnd"  
-                angle={-45}  
-                textAnchor="end"  
-              />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              {data.map((competitor, index) => (
-                <Bar
-                  key={competitor.name}
-                  dataKey={activeTab === "Ad Creatives" ? "adSpend" : "websiteUpdates"}
-                  name={competitor.name}
-                  fill={`hsl(${index * 60}, 70%, 50%)`}
-                  isAnimationActive={true} 
-                  animationDuration={800} 
-                />
-              ))}
-            </BarChart>
-          </ResponsiveContainer>
-        );
-      default:
-        return null;
-    }
-  };
+  const colors = [
+    "#1f77b4", 
+    "#ff7f0e", 
+    "#2ca02c", 
+    "#d62728", 
+    "#9467bd", 
+    "#8c564b", 
+    "#17becf", 
+];
+
 
   return (
-    <div className="container mx-auto p-4 max-w-4xl">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-center">Historical Data & Trends</h1>
+    <div className="container mx-auto p-4 max-w-6xl">
+      <h1 className="text-2xl font-semibold mb-4">Activity Analysis</h1>
+
+      <div className="flex flex-wrap justify-between mb-8 gap-4">
+        <Card className="bg-card p-4 rounded-lg shadow-md flex-1 min-w-[250px]">
+          <CardHeader>
+            <CardTitle className="text-center text-xl font-medium">Top Competitor</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-center">DJI</p>
+            <p className="text-center text-sm text-muted-foreground">Most active in the last 30 days</p>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-card p-4 rounded-lg shadow-md flex-1 min-w-[250px]">
+          <CardHeader>
+            <CardTitle className="text-center text-xl font-medium">Overall Trend</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-center">SEO Increasing</p>
+            <p className="text-center text-sm text-muted-foreground">15% growth in the last quarter</p>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-card p-4 rounded-lg shadow-md flex-1 min-w-[250px]">
+          <CardHeader>
+            <CardTitle className="text-center text-xl font-medium">Key Activity</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-center">Ad Campaigns</p>
+            <p className="text-center text-sm text-muted-foreground">50% of all activities</p>
+          </CardContent>
+        </Card>
       </div>
 
-      <Card className="mb-8">
-        <CardHeader>
-          <CardTitle className="text-2xl">Metrics Selection</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {metrics.map((metric) => (
-            <div key={metric} className="flex items-center justify-between">
-              <Label htmlFor={metric} className="text-lg">
-                {metric}
-              </Label>
-              <Switch
-                id={metric}
-                checked={selectedMetrics[metric]}
-                onCheckedChange={() => handleMetricToggle(metric)}
+      <div className="mb-4">
+        <Select value={selectedMetric} onValueChange={setSelectedMetric}>
+          <SelectTrigger className="w-[200px]">
+            <SelectValue placeholder="Select Activity Type" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="SEO Keywords">SEO Keywords</SelectItem>
+            <SelectItem value="Ad Creatives">Ad Creatives</SelectItem>
+            <SelectItem value="Social Media Posts">Social Media Posts</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      <div className="mb-4">
+        <h4 className="text-lg font-medium mb-2">Select Competitors:</h4>
+        <div className="flex flex-wrap gap-4">
+          {Trendcompetitor.map((competitor) => (
+            <label key={competitor} className="inline-flex items-center space-x-2">
+              <input
+                type="checkbox"
+                checked={selectedCompetitors.includes(competitor)}
+                onChange={() => handleCompetitorSelection(competitor)}
+                className="form-checkbox h-4 w-4"
               />
-            </div>
+              <span>{competitor}</span>
+            </label>
           ))}
+        </div>
+      </div>
 
-          <div className="pt-4">
-            <Button
-              variant="outline"
-              onClick={() => setIsAdvancedOpen(!isAdvancedOpen)}
-              className="w-full justify-between"
-            >
-              Advanced Customization
-              {isAdvancedOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-            </Button>
-            {isAdvancedOpen && (
-              <div className="mt-4 space-y-4">
-                <div>
-                  <Label htmlFor="competitors">Competitors</Label>
-                  <Select
-                    value={selectedCompetitors.join(", ")}
-                    onValueChange={(value: any) => setSelectedCompetitors(value.split(", "))}
-                  >
-                    <SelectTrigger id="competitors">
-                      <SelectValue placeholder="Select competitors" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {competitors.map((competitor) => (
-                        <SelectItem key={competitor} value={competitor}>
-                          {competitor}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <Label htmlFor="dateRange">Date Range</Label>
-                  <DatePickerWithRange
-                    selected={dateRange}
-                    onSelect={(range) => {
-                      if (range.from && range.to) {
-                        setDateRange({ from: range.from, to: range.to });
-                      }
-                    }}
-                  />
-                </div>
-              </div>
-            )}
+      <Card className="bg-card shadow-lg rounded-lg p-6">
+        <CardHeader className="mb-4">
+          <div className="flex justify-between items-center">
+            <CardTitle className="text-2xl font-bold">{selectedMetric} Trends</CardTitle>
+            <div className="flex items-center space-x-2">
+              <Switch
+                id="show-benchmarks"
+                checked={showBenchmarks}
+                onCheckedChange={setShowBenchmarks}
+              />
+              <Label htmlFor="show-benchmarks" className="text-sm">Show Benchmarks</Label>
+            </div>
           </div>
-
-          <div>
-            <Label htmlFor="trackingFrequency">Tracking Frequency</Label>
-            <Select value={trackingFrequency} onValueChange={setTrackingFrequency}>
-              <SelectTrigger id="trackingFrequency">
-                <SelectValue placeholder="Select tracking frequency" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="daily">Daily</SelectItem>
-                <SelectItem value="weekly">Weekly</SelectItem>
-                <SelectItem value="monthly">Monthly</SelectItem>
-              </SelectContent>
-            </Select>
+        </CardHeader>
+        <CardContent>
+          <div className="h-[400px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={averages}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                {selectedCompetitors.map((competitor, index) => (
+                  <Line
+                    key={competitor}
+                    type="monotone"
+                    dataKey={competitor}
+                    stroke={colors[index % colors.length]}
+                    strokeWidth={2}
+                    dot={false}
+                  />
+                ))}
+                {showBenchmarks && (
+                  <>
+                    <Line
+                      type="monotone"
+                      dataKey="average"
+                      stroke="#ff7300"
+                      strokeDasharray="5 5"
+                      strokeWidth={2}
+                      dot={false}
+                    />
+                    <ReferenceLine y={topPerformer} label="Top" stroke="green" strokeDasharray="3 3" />
+                    <ReferenceLine y={lowestPerformer} label="Lowest" stroke="red" strokeDasharray="3 3" />
+                  </>
+                )}
+              </LineChart>
+            </ResponsiveContainer>
           </div>
         </CardContent>
       </Card>
 
-      <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as Metric)}>
-        <TabsList className="grid w-full grid-cols-4">
-          {metrics.map((metric) => (
-            <TabsTrigger key={metric} value={metric} disabled={!selectedMetrics[metric]}>
-              {metric}
-            </TabsTrigger>
-          ))}
-        </TabsList>
-        {metrics.map((metric) => (
-          <TabsContent key={metric} value={metric}>
-            <Card>
-              <CardHeader>
-                <CardTitle>{metric}</CardTitle>
-              </CardHeader>
-              <CardContent>{renderChart()}</CardContent>
-            </Card>
-          </TabsContent>
-        ))}
-      </Tabs>
-
-      <div className="mt-8 flex justify-between">
+      <div className="mt-8 flex justify-end space-x-4">
         <Button
-          className="bg-purple-600 text-white hover:bg-purple-700"
-          onClick={() => setIsModalOpen(true)} 
+          className="bg-primary text-primary-foreground hover:bg-primary/90"
+          onClick={() => console.log("Generate Report")}
         >
           Generate Report
         </Button>
-
-        <Button
-          className="bg-purple-600 text-white hover:bg-purple-700"
-          onClick={() => console.log("Save and Continue")}
-        >
+        <Button variant="outline" onClick={() => console.log("Save and Continue")}>
           Save & Continue
         </Button>
       </div>
-
-      {isModalOpen && (
-        <ReportGenerationModal open={isModalOpen} setOpen={setIsModalOpen} />
-      )}
     </div>
   );
 }

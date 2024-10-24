@@ -1,62 +1,37 @@
-"use client"
+"use client";
 
-import { useState, useEffect, useMemo } from "react"
+import { useState, useEffect } from "react";
 import {
   ThumbsUp,
   MessageSquare,
-  Share2, ChevronDown, Globe,
+  Share2,
+  ChevronDown,
+  Globe,
   Image,
   Users,
   ScanText,
-  Clock, ExternalLink
-} from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+  Clock,
+  ExternalLink,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { motion, AnimatePresence } from "framer-motion"
-import moment from "moment"
-import { Badge } from "@/components/ui/badge"
-
-const competitors = ["Competitor A", "Competitor B", "Competitor C"]
-const activityTypes = ["SEO", "Ad Creatives", "Social Media"]
-
-interface NewsItem {
-  id: string
-  competitor: string
-  type: string
-  content: string
-  date: string
-  likes: number
-  comments: number
-  shares: number
-}
-
-const generateMockNewsItem = (): NewsItem => {
-  const randomCompetitor =
-    competitors[Math.floor(Math.random() * competitors.length)] ?? "Unknown Competitor"
-  const randomType =
-    activityTypes[Math.floor(Math.random() * activityTypes.length)] ?? "Unknown Type"
-
-  return {
-    id: Math.random().toString(36).substr(2, 9),
-    competitor: randomCompetitor,
-    type: randomType,
-    content: `New ${randomType} update for ${randomCompetitor}`,
-    date: new Date().toISOString(),
-    likes: Math.floor(Math.random() * 100),
-    comments: Math.floor(Math.random() * 50),
-    shares: Math.floor(Math.random() * 20),
-  }
-}
-
-const generateMockNewsFeed = (count: number): NewsItem[] =>
-  Array.from({ length: count }, generateMockNewsItem)
+} from "@/components/ui/dropdown-menu";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { motion, AnimatePresence } from "framer-motion";
+import moment from "moment";
+import { Badge } from "@/components/ui/badge";
+import {
+  competitors,
+  activityTypes,
+  generateMockNewsFeed,
+  generateMockNewsItem,
+  NewsItem,
+} from "@/ data/mock-data";
 
 const CompetitorBadge = ({ name }: { name: string }) => {
   const initials = name.split(' ').map(word => word[0]).join('').toUpperCase();
@@ -71,48 +46,48 @@ const CompetitorBadge = ({ name }: { name: string }) => {
 };
 
 export default function ComprehensiveCompetitorDashboard() {
-  const [newsFeed, setNewsFeed] = useState<NewsItem[]>([])
-  const [selectedCompetitor, setSelectedCompetitor] = useState<string>("All")
-  const [savedNews, setSavedNews] = useState<NewsItem[]>([])
+  const [newsFeed, setNewsFeed] = useState<NewsItem[]>([]);
+  const [selectedCompetitor, setSelectedCompetitor] = useState<string>("All");
+  const [savedNews, setSavedNews] = useState<NewsItem[]>([]);
   const [selectedItems, setSelectedItems] = useState<{
     SEO: string[],
     "Ad Creatives": string[],
-    "Social Media": string[]
+    "Social Media": string[],
   }>({
     SEO: [],
     "Ad Creatives": [],
-    "Social Media": []
-  })
+    "Social Media": [],
+  });
 
   useEffect(() => {
-    const newsItems = generateMockNewsFeed(50)
-    setNewsFeed(newsItems)
-  }, [])
+    const newsItems = generateMockNewsFeed(50); 
+    setNewsFeed(newsItems);
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const newItem = generateMockNewsItem()
-      setNewsFeed((prev) => [newItem, ...prev])
-    }, 300000)
+      const newItem = generateMockNewsItem(); 
+      setNewsFeed((prev) => [newItem, ...prev]);
+    }, 300000); 
 
-    return () => clearInterval(interval)
-  }, [])
+    return () => clearInterval(interval);
+  }, []);
 
   const filteredNewsFeed = newsFeed.filter((item) => {
     if (selectedCompetitor !== "All" && item.competitor !== selectedCompetitor) {
-      return false
+      return false;
     }
-    return true
-  })
+    return true;
+  });
 
   const handleSelectItem = (itemId: string, itemType: string) => {
     setSelectedItems((prev) => ({
       ...prev,
       [itemType]: prev[itemType as keyof typeof prev].includes(itemId)
         ? prev[itemType as keyof typeof prev].filter((id) => id !== itemId)
-        : [...prev[itemType as keyof typeof prev], itemId]
-    }))
-  }
+        : [...prev[itemType as keyof typeof prev], itemId],
+    }));
+  };
 
   const NewsItem = ({ item }: { item: NewsItem }) => (
     <motion.div
@@ -179,13 +154,13 @@ export default function ComprehensiveCompetitorDashboard() {
         </CardContent>
       </Card>
     </motion.div>
-  )
+  );
 
   const FilterDropdown = ({ options, value, onChange, label }: {
-    options: string[]
-    value: string
-    onChange: (value: string) => void
-    label: string
+    options: string[];
+    value: string;
+    onChange: (value: string) => void;
+    label: string;
   }) => (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -212,14 +187,14 @@ export default function ComprehensiveCompetitorDashboard() {
         ))}
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 
   return (
     <div className="container mx-auto p-4 space-y-8">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-semibold">Competitor Activities</h2>
         <FilterDropdown
-          options={["All", ...competitors]}
+          options={["All", ...competitors]} 
           value={selectedCompetitor}
           onChange={setSelectedCompetitor}
           label="Filter by Competitor"
@@ -257,5 +232,5 @@ export default function ComprehensiveCompetitorDashboard() {
         ))}
       </div>
     </div>
-  )
+  );
 }

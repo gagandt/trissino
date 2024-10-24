@@ -10,19 +10,8 @@ import { Switch } from "@/components/ui/switch"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import AddCompetitorDialog from '@/components/competetiors/add-new-competetior'
+import { industry, suggestedCompetitors } from "@/ data/mock-data";
 
-// Hardcoded values for demo purposes
-const industry = "Skincare in the US"
-const suggestedCompetitors = [
-  { name: "Glossier", url: "https://www.glossier.com", revenue: "$100M", marketShare: "5%" },
-  { name: "The Ordinary", url: "https://theordinary.com", revenue: "$200M", marketShare: "10%" },
-  { name: "Drunk Elephant", url: "https://www.drunkelephant.com", revenue: "$150M", marketShare: "7%" },
-  { name: "Tatcha", url: "https://www.tatcha.com", revenue: "$120M", marketShare: "6%" },
-  { name: "Glow Recipe", url: "https://www.glowrecipe.com", revenue: "$80M", marketShare: "4%" },
-  { name: "Fenty Beauty", url: "https://fentybeauty.com", revenue: "$570M", marketShare: "12%" },
-  { name: "Kiehl's", url: "https://www.kiehls.com", revenue: "$1B", marketShare: "15%" },
-  { name: "Cetaphil", url: "https://www.cetaphil.com", revenue: "$200M", marketShare: "8%" },
-]
 
 type Competitor = {
   name: string
@@ -72,10 +61,7 @@ export default function CompetitorSetup() {
         </Button>
       </div>
 
-
-
       <Tabs defaultValue="all" className="mb-6">
-
         <TabsContent value="all">
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {competitors.map((competitor, index) => (
@@ -111,7 +97,6 @@ export default function CompetitorSetup() {
           </div>
         </TabsContent>
       </Tabs>
-
 
       <Button onClick={handleSaveAndContinue} className="mt-6">Save & Continue</Button>
 
