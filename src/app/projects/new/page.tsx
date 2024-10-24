@@ -17,6 +17,12 @@ const industryOptions = [
   { value: 'tech', label: 'Tech' },
   { value: 'healthcare', label: 'Healthcare' },
   { value: 'fmcg', label: 'FMCG' },
+  { value: 'automotive', label: 'Automotive' },
+  { value: 'finance', label: 'Finance' },
+  { value: 'real-estate', label: 'Real Estate' },
+  { value: 'travel', label: 'Travel' },
+  { value: 'education', label: 'Education' },
+  { value: 'other', label: 'Other' },
 ]
 
 const companySizeOptions = [
@@ -26,9 +32,9 @@ const companySizeOptions = [
 ]
 
 const targetMarketOptions = [
-  { value: 'local', label: 'Local' },
-  { value: 'national', label: 'National' },
-  { value: 'global', label: 'Global' },
+  { value: 'local', label: 'Local (Within a city or region)' },
+  { value: 'national', label: 'National (Within the US)' },
+  { value: 'global', label: 'Global (Worldwide)' },
 ]
 
 const formSchema = z.object({

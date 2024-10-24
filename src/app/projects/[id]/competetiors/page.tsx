@@ -23,7 +23,7 @@ type Competitor = {
 
 export default function CompetitorSetup() {
   const [open, setOpen] = useState(false)
-  const [competitors, setCompetitors] = useState<Competitor[]>(suggestedCompetitors.map(c => ({ ...c, isTracked: false })))
+  const [competitors, setCompetitors] = useState<Competitor[]>(suggestedCompetitors.map(c => ({ ...c, isTracked: true })))
 
   const handleCompetitorToggle = (index: number) => {
     setCompetitors(competitors.map((c, i) =>

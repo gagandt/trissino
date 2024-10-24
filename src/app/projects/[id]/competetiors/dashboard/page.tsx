@@ -60,15 +60,15 @@ export default function ComprehensiveCompetitorDashboard() {
   });
 
   useEffect(() => {
-    const newsItems = generateMockNewsFeed(50); 
+    const newsItems = generateMockNewsFeed(50);
     setNewsFeed(newsItems);
   }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const newItem = generateMockNewsItem(); 
+      const newItem = generateMockNewsItem();
       setNewsFeed((prev) => [newItem, ...prev]);
-    }, 300000); 
+    }, 300000);
 
     return () => clearInterval(interval);
   }, []);
@@ -194,7 +194,7 @@ export default function ComprehensiveCompetitorDashboard() {
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-semibold">Competitor Activities</h2>
         <FilterDropdown
-          options={["All", ...competitors]} 
+          options={["All", ...competitors]}
           value={selectedCompetitor}
           onChange={setSelectedCompetitor}
           label="Filter by Competitor"
@@ -211,6 +211,9 @@ export default function ComprehensiveCompetitorDashboard() {
                 {type === "Social Media" && <Users className="w-5 h-5 mr-2 text-muted-foreground" />}
                 {type}
               </CardTitle>
+              <Button variant="outline" size="sm">
+                Analyze
+              </Button>
               {selectedItems[type as keyof typeof selectedItems].length > 0 && (
                 <Button variant="outline" size="sm">
                   Analyze <Badge variant="default" className="ml-2">{selectedItems[type as keyof typeof selectedItems].length}</Badge>
